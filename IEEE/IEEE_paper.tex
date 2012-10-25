@@ -1,0 +1,86 @@
+% ----------------------------------------------- %
+% --- File: IEEE_paper.tex  --------------------- %  
+% --- Authors: Nick, Jed, Zach, K-Dink   -------- %
+% --- Due Date: 11:59PM, Monday, October 29th --- %
+% ----------------------------------------------- %
+
+% IEEE Special Document Class
+\documentclass[twocolumn,letterpaper]{IEEEAerospace2012}
+
+% Other packages
+
+
+
+% -------------- $
+% -- DOCUMENT -- $
+% -------------- $
+\begin{document}
+
+\title{DayStar: Modeling and Test Results of a Balloon-Borne Daytime Star Tracker}
+
+\author{%
+    N. Truesdale, K. Dinkel, Z. Dischner, J. Diller \\
+    Aerospace Engineering Sciences\\
+    University of Colorado at Boulder\\
+    Boulder, CO 80309\\
+    \and 
+    Dr. Eliot Young\\
+    Space Studies Department\\
+    Southwest Research Institute\\
+    Boulder, CO 80302
+    %
+    \thanks{\footnotesize 978-1-4577-0557-1/12/$\$26.00$ \copyright2012 IEEE.}              % This creates the copyright info that is the correct 2012 data
+    %\thanks{{978-1-4577-0557-1/12/$\$26.00$ \copyright2012 Crown.}}          % Use this copyright notice only if you are employed by a crown government (e.g., Canada, UK, Australia)
+    %\thanks{{U.S. Government work not protected by U.S. copyright.}}         % Use this copyright notice only if you are employed by the U.S. Government.
+    %%%%% Use this footnote to keep track of your paper number/versioning.
+    \thanks{$^1$ IEEEAC Paper \#xxxx, Version x, Updated dd/mm/yyyy.} % NOTE: Modify this line to reflect your paper number, version, and date of version for tracking purposes.
+}
+
+
+\maketitle
+
+\begin{abstract}
+    High altitude balloons are capable of supporting astronomical observations with virtually no image degradation due to atmospheric turbulence. To take advantage of this space-like seeing, a telescope must be pointed and stabilized with sub-arcsecond precision. This problem consists of two parts: providing an error signal, and using it to correct the pointing. This paper addresses error signal acquisition, specifically focusing on modeling and flight testing of the DayStar star tracker.
+
+    DayStar is a star tracker designed under the University of Colorado Aerospace Capstone Program with support from Southwest Research Institute. It is intended to improve upon the pointing accuracy and daytime performance of the ST5000, a star tracker commonly used in NASA’s sounding rocket program. The ST5000 was shown to work on a balloon at night, but failed to acquire stars during daytime. DayStar remedies this issue by filtering light below 620 nm and by using a CMOS sensor with high red-performance and resolution. This attenuates most of the sky background, which, combined with custom star identification algorithms, allows stars be seen during the day. 
+
+    To validate modeling and demonstrate daytime star acquisition, a DayStar prototype flew on a high altitude balloon in September, 2012. The filtered camera typically saw four or more stars during daytime, proving the ability to operate diurnally. This paper will further discuss DayStar’s ability to obtain a Lost-in-Space solution during daytime as a function of sky background and galactic latitude of the field of view. It will also focus on the precision of star centroiding algorithms and the pointing acuity for both day and night conditions. These findings will be used to validate the performance model and examine DayStar as a potential star tracker for high altitude balloon observatories. 
+\end{abstract}
+
+\tableofcontents
+
+%-------------------------------------------------------------------------------------------------------
+\section{Introduction}
+This section will introduce the daytime startracker problem, and give the background and motivation necessary to setup our prototype and the importance of its performance.
+
+%-------------------------------------------------------------------------------------------------------
+\section{Modeling}
+This section will cover the modeling, in particular focusing on system performance. Emphasis will be on daytime performance, our ability to see stars, and the design choices made to ensure this.
+
+%-------------------------------------------------------------------------------------------------------
+\section{Test Flight Results}
+This is the money section. We will summarize our test flight (very briefly) and then launch into our results. Again, the focus will be on daytime, and we will hammer home how well we see stars and track during the day.
+
+%-------------------------------------------------------------------------------------------------------
+\section{Conclusions}
+Here we will inspiringly conclude by tying our results and modeling together, and saying why this is so important to the future of balloon science.
+
+%-------------------------------------------------------------------------------------------------------
+\section{References}
+
+
+%-------------------------------------------------------------------------------------------------------
+\section{Biography}
+
+\appendices
+
+\acknowledgments
+The authors thank the Office of Naval Research for funding this project.
+
+
+\thebiography
+\begin{biographywithjpg}{Wayne Blanding}{DayStarLogo.jpg}
+received his B.S. degree in Systems Engineering from the U.S. Naval Academy in 1982 and an Ocean Engineer degree from the MIT/Woods Hole Joint Program in Ocean Engineering in 1990, and a Ph.D. in Electrical Engineering from the University of Connecticut in 2007.  From 1982 to 2002 was an officer in the U.S. Navy's submarine force and was assigned to three different submarines throughout his career. He retired from the Navy at the rank of Commander. He is currently an Assistant Professor of Electrical and Computer Engineering at York College of Pennsylvania where he is involved in starting up its ECE program. His research interests include target tracking, detection/estimation theory, and sailing. \end{biographywithjpg}
+
+
+\end{document}
