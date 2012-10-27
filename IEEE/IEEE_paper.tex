@@ -62,7 +62,15 @@ This section will cover the modeling, in particular focusing on system performan
 This is the money section. We will summarize our test flight (very briefly) and then launch into our results. Again, the focus will be on daytime, and we will hammer home how well we see stars and track during the day.
 
 \subsection{Tracking Performance}
-Without a true attitude solution, it is still possible to 
+Without a true attitude solution, it is still possible to obtain a performance metric for how well the DayStar tracks stars. This is done with a purely numerical analysis.
+
+Given a set of images, the first task is to obtain a list of star centroid locations. By comparing the stars in each image to a reference (epoch) set of star vectors, in this case, just the first image in a set, the motion in said star locations can be described as a set of rotations. The "q-method" is a widely used method to determine rotations based on minimizing the rms of the residuals between coordinate frames. It was employed here to find the quaternion rotation between the reference frame and each subsequent.
+
+Quaternion rotations were then converted into the Euler angles: roll,pitch, and yaw. Each set of angles contain information about the change in star locations in time. The predominant modes of change are low-frequency rotations, and high frequency rotations. The low frequency observations are due to the motion of the gondola, while high frequency observations are due to the inaccuracies of the DayStar system. 
+
+A measure of the system's precision is desired, so the low-frequency rotations need to be removed. This was done by examining the rotations in the frequency domain, using fast fourrier transforms, and applying a high-pass filter to the transformed rotations. Transforming back into the time domain, the rms of each the resulting rotation sets describes DayStar's ability to identify and track stars over an image set. 
+
+  
 
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
