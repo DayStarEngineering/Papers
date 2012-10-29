@@ -75,7 +75,13 @@
 
 %-------------------------------------------------------------------------------------------------------
 \section{Introduction}
-This section will introduce the daytime startracker problem, and give the background and motivation necessary to setup our prototype and the importance of its performance.
+NASA's Scientific Balloon Program flies large (up to 8000 lb) payloads each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at 120,000 ft, above 99.5\% of the Earth's atmosphere. This is especially advantageous for telescopic observing, providing conditions almost completely devoid of turbulence-induced image degradation. The development of a balloon platform that can image in the visible wavelengths with 0.1`` resolution is of widespread importance in the astronomical community. Ground-based system such as Subaru often look only in infrared wavelengths longer than 1 $\mu$m due to the unacceptable degradation of images taken at shorter wavelengths. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, visible-imaging, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of the year.
+
+The potential for stratospheric 1- and 2-m telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of this project is to improve tracking (attitude determination) systems to levels capable of supporting these systems. The \textit{de facto} standard for balloon-based attitude determination has become the University of Wisconsin's Star Tracker 5000 (ST5000). With its roots in NASA's sounding rocket program, this instrument provides an affordable way to achieve 0.24 and 0.53 arcsecond $1-\sigma$ pitch and yaw accuracies. The diffraction limit of a 1-m telescope is 0.125'' at $5000 \AA{}$. In order to control a fine steering mirror at this level, an error signal must be provided that is at least as good. While the ST5000 is close, it is still a factor of 5 too coarse to be the sole optical reference.
+
+
+
+
 
 %-------------------------------------------------------------------------------------------------------
 \section{Modeling}
@@ -212,9 +218,9 @@ Without a computed attitude solution, it is still possible to obtain a performan
 
 Given a set of images, the first task is to obtain a list of star centroid locations. By comparing the stars in each image to a reference (epoch) set of star vectors, in this case, just the first image in a set, the motion in said star locations can be described as a set of rotations. The "q-method" is a widely used method to determine rotations based on minimizing the rms of the residuals between coordinate frames. It was employed here to find the quaternion rotation between the reference frame and each subsequent one. Without pertaining to any particular attitude, each quaternion effective represents the change in attitude solution between frames. Thus, the variability of these attitude changes describes DayStar's precision in providing solutions, but only if the observed frame is assumed totally stationary. Since it was not, the quaternions had to be filtered to make this assumption valid.
 
-To perform the filtering, quaternion rotations were then converted into the Euler angles: roll, pitch, and yaw. Each set of angles contain information about the change in star locations in time. The predominant modes of change are low-frequency rotations, and high frequency rotations. The low frequency observations are due to the motion of the balloon gondola, while high frequency observations are due to the inaccuracies of the DayStar system. 
+To perform the filtering, quaternion rotations were then converted into the Euler angles: roll, pitch, and yaw. Each set of angles contain information about the change in star locations in time. The predominant modes of change are low-frequency rotations, and high frequency rotations. The low frequency observations are due to the motion of the balloon gondola, while high frequency observations are due to the inaccuracies of the DayStar system.
 
-A measure of the system's precision is desired, so the low-frequency rotations need to be removed. This was done by examining the Euler rotations in the frequency domain, using fast fourrier transforms, and applying a high-pass filter to the transformed rotations. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself. 
+A measure of the system's precision is desired, so the low-frequency rotations need to be removed. This was done by examining the Euler rotations in the frequency domain, using fast fourrier transforms, and applying a high-pass filter to the transformed rotations. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself.
 
 Below are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
 
@@ -236,7 +242,7 @@ Below are plots illustrating the filtering process for each Euler angle for a ba
     \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
     \caption{Yaw Signal and Filtering Using FFT}
 \end{figure}
-  
+
 By looking at the pictures, you can see things. Like low frequency motion being filtered out. Then, we do RMS stuff. And then get a final variance
 \begin{displaymath}\large
 	\boxed{Accuracy = XXXXXX arcseconds}
