@@ -82,15 +82,15 @@ This section will introduce the daytime startracker problem, and give the backgr
 The modeling for DayStar is split into two parts: image quality and algorithm performance. The two are functionally independent, and must be linked by one or more parameters. The primary link is signal-to-noise ratio, $\SNR$, though the shape of stars in the image is also important. The following sections describe how a threshold $\SNR$ and star shape are set by the algorithms analysis, and how image quality analysis is then used to support DayStar's design parameters and predict daytime performance.
 
 \subsection{Algorithms Analysis}
-The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time, and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method [CITE], which finds a least squares solution for the rotation between two coordinate frames. To discover how the q-method performs, a Monte Carlo simulation was conducted. A set of star coordinates were generated and subsequently perturbed using Gaussian random variables. The q-method was then used to calculate the rotation from the original frame to the perturbed frame. The number of stars in the field of view and the magnitude of the perturbations were varied to simulate different levels of star detection and centroiding ability. Figure \ref{fig:accuracy} shows the results of the simulation.
+The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method [CITE], which finds a least squares solution for the rotation between two coordinate frames. To discover how the q-method performs, a Monte Carlo simulation was conducted. A set of star coordinates were generated and subsequently perturbed using Gaussian random variables. The q-method was then used to calculate the rotation from the original frame to the perturbed frame. The number of stars in the field of view and the magnitude of the perturbations were varied to simulate different levels of star detection and centroiding ability. Figure \ref{fig:accuracy} shows the results of the simulation.
 \begin{figure}[H]
     \label{fig:accuracy}
     \includegraphics[width=3.5in]{\rootdir accuracy.eps}
     \caption{Attitude accuracy is a function of the centroid accuracy (colored lines) and the number of stars using in the q-method transformation}
 \end{figure}
-As expected, locating more stars and centroiding them more accurately produces more accurate attitude solutions.
+The more stars that DayStar is able to locate, the better it will be able to produce accurate attitude solutions.
 
-DayStar locates stars in an image using a custom algorithm which first finds a robust estimation for the background intensity and variance, and then examines pixels above the background to deciding if they are stars based on size, shape, and intensity. The performance of this algorithm was tested by generating synthetic star fields, Figure \ref{fig:starfield}, with known star locations and specified $SNR$s. Because DayStar was designed to centroid star images that are slightly out of focus and taken over appreciable exposures, generated stars were approximated as normal distributions. Shot noise was added to each image as a Poisson distributed random variable.
+DayStar locates stars in an image using a custom algorithm which first finds a robust estimation for the background intensity and variance, and then examines pixels above the background to decide if they are stars based on size, shape, and intensity. The performance of this algorithm was tested by generating synthetic star fields, Figure \ref{fig:starfield}, with known star locations and specified $SNR$s. Because DayStar was designed to centroid star images that are slightly out of focus and taken over appreciable exposures, generated stars were approximated as normal distributions. Shot noise was added to each image as a Poisson distributed random variable.
 \begin{figure}[H]
     \label{fig:starfield}
     \includegraphics[width=3.5in]{\rootdir starfield.eps}
@@ -156,14 +156,7 @@ Now, the flux from the background and star are parameterized by wavelength. This
     F = \int_{\lambda_1}^{\lambda_2} Q(\lambda) F(\lambda) \, d\lambda
 \end{equation}
 
-At the end of this process, the flux terms in Equation \ref{eq:snr} have been defined in terms of system and operational parameters. The background relies chiefly on altitude, while star flux is a function of visual magnitude and temperature. In addition
-
-\subsection{Performance Analysis}
-
-
-=======
 At the end of this process, the flux terms in Equation \ref{eq:snr} have been defined in terms of system and operational parameters. The background relies chiefly on altitude, while star flux is a function of visual magnitude and temperature. In addition, the units of flux have area and, in the case of the background, solid angle field of view in the denominator. This means the model also depends on the optics aperture size and total field of view.
->>>>>>> a1fdb62eb0f1061c4e8e580ec3796f315ecdfdb7
 
 The final piece of the image quality model is to apply Equation \ref{eq:snr} to a variety of stars to determine which are visible to the star identification algorithms. This reqires a knowledge of the stars DayStar is likely to see. One option is to construct a representative star field from past surveys; an old work by P.J Van Rhijn %REFERENCE%
 is an example of one that categorizes stars by visual magnitude and temperature, and reports the density per steradian of each type of star. A more thorough method could use catalogues like Tycho-2 to simulate actual starfields. For the sake of simplicity, DayStar's performance is estimated using the first method.
@@ -246,12 +239,12 @@ The authors thank the Office of Naval Research for funding this project.
 \begin{biographywithpic}{Nick Truesdale}{\rootdir Nick.eps}
 %Nick Truesdale
 %\rootdir Nick.jpg
-is a graduate student in Aerospace Engineering at the University of Colorado.
+is a graduate student in Aerospace Engineering at the University of Colorado at Boulder.
 He has been the Electrical Systems Lead for four balloon payloads, and has a wealth of experience designing power sytems and embedded electronics. His other projects have included CubeSats with the University of Colorado and radar scattering simulation with MIT Lincoln Laboratory. Nick enjoys playing guitar and marimba as well as downhill skiing.
 \end{biographywithpic}
 
 \begin{biographywithpic} {Kevin Dinkel}{\rootdir Kevin.eps}
-is
+is a graduate student in Aerospace Engineering at the University of Colorado at Boulder. He has been involved in designing and flying 5 balloon payloads as Project Manager, CDH Lead Engineer, and Mission Specialist. Kevin is a skillful software engineer and currently works on planning and scheduling algorithms at the Laboratory for Atmospheric and Space Physics (LASP) for the MMS 4-spacecraft cluster.
 \end{biographywithpic}
 
 \begin{biographywithpic}{Zach Dischner}{\rootdir Zach.eps}
