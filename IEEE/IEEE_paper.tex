@@ -124,7 +124,7 @@ Given a minimum $\SNR$ and a star blur of 4 to 6 pixels square, the goal of the 
 The dark current and read noise are properties of the sensor. The flux from the star and the background, however, must be modeled based on DayStar's environment and pointing. The background flux can be estimated from the MODTRAN model for sky brightness, as seen in Figure \ref{fig:modtran}. The unit of kilo-Rayleighs is equvialent to $\frac{10^{9}}{4\pi}$ photons/s/cm$^2$/steradian. Also note that the flux in Figure \ref{fig:modtran} is parameterized by wavelength; this will be important in analyzing the effect of quantum efficiency and optical filtering. %REFERENCE%
 \begin{figure}
     \label{fig:modtran}
-    \includegraphics[width=3in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=3in]{\rootdir modtran_alt.eps}
     \caption{The sky background is found by interpolation for a 38km flight with 90 degree solar azimuth}
 \end{figure}
 
@@ -155,10 +155,6 @@ Now, the flux from the background and star are parameterized by wavelength. This
     \label{eq:totalfluxes}
     F = \int_{\lambda_1}^{\lambda_2} Q(\lambda) F(\lambda) \, d\lambda
 \end{equation}
-
-At the end of this process, the flux terms in Equation \ref{eq:snr} have been defined in terms of system and operational parameters. The background relies chiefly on altitude, while star flux is a function of visual magnitude and temperature. In addition
-
-\subsection{Performance Analysis}
 
 At the end of this process, the flux terms in Equation \ref{eq:snr} have been defined in terms of system and operational parameters. The background relies chiefly on altitude, while star flux is a function of visual magnitude and temperature. In addition, the units of flux have area and, in the case of the background, solid angle field of view in the denominator. This means the model also depends on the optics aperture size and total field of view.
 
