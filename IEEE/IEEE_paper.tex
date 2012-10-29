@@ -1,5 +1,5 @@
 % ----------------------------------------------- %
-% --- File: IEEE_paper.tex  --------------------- %  
+% --- File: IEEE_paper.tex  --------------------- %
 % --- Authors: Nick, Jed, Zach, K-Dink   -------- %
 % --- Due Date: 11:59PM, Monday, October 29th --- %
 % ----------------------------------------------- %
@@ -11,6 +11,7 @@
 \usepackage{times, rawfonts, geometry}
 \usepackage[pdftex,final]{graphicx}
 \usepackage{amsmath,amssymb}
+\usepackage{float}
 
 % New commands
 \newcommand{\ignore}[1]{}  % {} empty inside = %% comment
@@ -46,7 +47,7 @@
     Aerospace Engineering Sciences\\
     University of Colorado at Boulder\\
     Boulder, CO 80309\\
-    \and 
+    \and
     Dr. Eliot Young\\
     Space Studies Department\\
     Southwest Research Institute\\
@@ -65,9 +66,9 @@
 \begin{abstract}
     High altitude balloons are capable of supporting astronomical observations with virtually no image degradation due to atmospheric turbulence. To take advantage of this space-like seeing, a telescope must be pointed and stabilized with sub-arcsecond precision. This problem consists of two parts: providing an error signal, and using it to correct the pointing. This paper addresses error signal acquisition, specifically focusing on modeling and flight testing of the DayStar star tracker.
 
-    DayStar is a star tracker designed under the University of Colorado Aerospace Capstone Program with support from Southwest Research Institute. It is intended to improve upon the pointing accuracy and daytime performance of the ST5000, a star tracker commonly used in NASA’s sounding rocket program. The ST5000 was shown to work on a balloon at night, but failed to acquire stars during daytime. DayStar remedies this issue by filtering light below 620 nm and by using a CMOS sensor with high red-performance and resolution. This attenuates most of the sky background, which, combined with custom star identification algorithms, allows stars be seen during the day. 
+    DayStar is a star tracker designed under the University of Colorado Aerospace Capstone Program with support from Southwest Research Institute. It is intended to improve upon the pointing accuracy and daytime performance of the ST5000, a star tracker commonly used in NASA’s sounding rocket program. The ST5000 was shown to work on a balloon at night, but failed to acquire stars during daytime. DayStar remedies this issue by filtering light below 620 nm and by using a CMOS sensor with high red-performance and resolution. This attenuates most of the sky background, which, combined with custom star identification algorithms, allows stars be seen during the day.
 
-    To validate modeling and demonstrate daytime star acquisition, a DayStar prototype flew on a high altitude balloon in September, 2012. The filtered camera typically saw four or more stars during daytime, proving the ability to operate diurnally. This paper will further discuss DayStar’s ability to obtain a Lost-in-Space solution during daytime as a function of sky background and galactic latitude of the field of view. It will also focus on the precision of star centroiding algorithms and the pointing acuity for both day and night conditions. These findings will be used to validate the performance model and examine DayStar as a potential star tracker for high altitude balloon observatories. 
+    To validate modeling and demonstrate daytime star acquisition, a DayStar prototype flew on a high altitude balloon in September, 2012. The filtered camera typically saw four or more stars during daytime, proving the ability to operate diurnally. This paper will further discuss DayStar’s ability to obtain a Lost-in-Space solution during daytime as a function of sky background and galactic latitude of the field of view. It will also focus on the precision of star centroiding algorithms and the pointing acuity for both day and night conditions. These findings will be used to validate the performance model and examine DayStar as a potential star tracker for high altitude balloon observatories.
 \end{abstract}
 
 \tableofcontents
@@ -78,31 +79,56 @@ This section will introduce the daytime startracker problem, and give the backgr
 
 %-------------------------------------------------------------------------------------------------------
 \section{Modeling}
-The modeling for DayStar is split into two parts: image quality and algorithm performance. The two are functionally independent, and must be linked by one or more parameters. The primary link is signal-to-noise ratio ($\SNR$), though the shape of stars in the image is also important. The following sections describe how a threshold SNR and star shape are set by the algorithms analysis, and how image quality analysis is then used to support DayStar's design parameters and predict daytime performance.
+The modeling for DayStar is split into two parts: image quality and algorithm performance. The two are functionally independent, and must be linked by one or more parameters. The primary link is signal-to-noise ratio, $\SNR$, though the shape of stars in the image is also important. The following sections describe how a threshold $\SNR$ and star shape are set by the algorithms analysis, and how image quality analysis is then used to support DayStar's design parameters and predict daytime performance.
 
 \subsection{Algorithms Analysis}
-KEVIN, you write here.
-Please place a figure that shows why we want between 4 and 6 pixels.
-\begin{figure}
-    \label{fig:blur}
-    \caption{The optimal size for a star in pixels is determined by centroid accuracy to be between 4 and 6 pixels}
+The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method [CITE], which finds a least squares solution for the rotation between two coordinate frames. To discover how the q-method performs, a Monte Carlo simulation was conducted. A set of star coordinates were generated and subsequently perturbed using Gaussian random variables. The q-method was then used to calculate the rotation from the original frame to the perturbed frame. The number of stars in the field of view and the magnitude of the perturbations were varied to simulate different levels of star detection and centroiding ability. Figure \ref{fig:accuracy} shows the results of the simulation.
+\begin{figure}[H]
+    \label{fig:accuracy}
+    \includegraphics[width=3.5in]{\rootdir accuracy.eps}
+    \caption{Attitude accuracy is a function of the centroid accuracy (colored lines) and the number of stars using in the q-method transformation}
 \end{figure}
+The more stars that DayStar is able to locate, the better it will be able to produce accurate attitude solutions.
+
+DayStar locates stars in an image using a custom algorithm which first finds a robust estimation for the background intensity and variance, and then examines pixels above the background to decide if they are stars based on size, shape, and intensity. The performance of this algorithm was tested by generating synthetic star fields, Figure \ref{fig:starfield}, with known star locations and specified $SNR$s. Because DayStar was designed to centroid star images that are slightly out of focus and taken over appreciable exposures, generated stars were approximated as normal distributions. Shot noise was added to each image as a Poisson distributed random variable.
+\begin{figure}[H]
+    \label{fig:starfield}
+    \includegraphics[width=3.5in]{\rootdir starfield.eps}
+    \caption{Simulated starfield with added shot noise}
+\end{figure}
+The probability of detecting a star is a function of how long the array integrates the star's signal, \textit{exposure time}, and over how many pixels the star's signal is spread, \textit{blur}. Testing the star detection algorithm over a range of different exposure times and blurs, its behavior is characterized below.
+\begin{figure}[H]
+    \label{fig:detectstars}
+    \includegraphics[width=3.0in]{\rootdir detectstars.eps}
+    \caption{The target region represents the exposure time and blur where the star identification algorithm is most successful}
+\end{figure}
+From Figure \ref{fig:detectstars}, the daytime design-to exposure range was chosen to be 30-70 ms and the blur was chosen to be between $16$ ($4 \times 4$) and $36$ ($6 \times 6$) pixels. These values correspond to a specific signal to noise ratio depending on the magnitude of star in question. This relationship, shown in Figure \ref{fig:snr}, also varies with blur and exposure time.
+\begin{figure}[H]
+    \label{fig:snr}
+    \includegraphics[width=3.0in]{\rootdir snr.eps}
+    \caption{The signal to noise ratio of a star is a function of exposure time and the number of pixels over which it is subtended}
+\end{figure}
+
+For DayStar to successfully identify and centroid a star a minimum $SNR$ of 6.0 was chosen as a design-to specification.
 
 
 \subsection{Image Quality Analysis}
-Given a minimum SNR and a star blur of 4 to 6 pixels square, the goal of the image modeling is to determine the number of stars visible during night and day. This requires identification of signal and noise sources; we assume that the sky background and stars generate Poisson shot noise, and also consider dark current ($\DC$) and read noise ($\RN$) from the image sensor. On a star-by-star basis, SNR is given by Equation \ref{eq:snr}, in which $F$ is the flux from the star or background in photons per second per pixel, $t$ is exposure time in seconds and $n$ is the number of square pixels that totally encompass the star as specified in Figure \ref{fig:blur}.  
-\begin{equation} 
+Given a minimum SNR and a star blur of 4 to 6 pixels square, the goal of the image modeling is to determine the number of stars visible during night and day. This requires identification of signal and noise sources; we assume that the sky background and stars generate Poisson shot noise, and also consider dark current ($\DC$) and read noise ($\RN$) from the image sensor. On a star-by-star basis, SNR is given by Equation \ref{eq:snr}, in which $F$ is the flux from the star or background in photons per second per pixel, $t$ is exposure time in seconds and $n$ is the number of square pixels that totally encompass the star as specified in Figure \ref{fig:blur}.
+
+\subsection{Image Quality}
+Given a minimum $\SNR$ and a star blur of 4 to 6 pixels square, the goal of the image modeling is to determine the number of stars visible during night and day. This requires identification of signal and noise sources; we assume that the sky background and stars generate Poisson shot noise, and also consider dark current $\DC$ and read noise $\RN$ from the image sensor. On a star-by-star basis, SNR is given by Equation \ref{eq:snr}, in which $F$ is the flux from the star or background in photons per second per pixel, $t$ is exposure time in seconds and $n$ is the number of square pixels that totally encompass the star as specified in Figure \ref{fig:blur}.
+\begin{equation}
     \label{eq:snr}
     \SNR = \frac{F_{\sub{star}}t}{\sqrt{F_{\sub{star}} t + F_{\sub{sky}} n t + \DC n t + \RN^2 n }}
 \end{equation}
 The dark current and read noise are properties of the sensor. The flux from the star and the background, however, must be modeled based on DayStar's environment and pointing. The background flux can be estimated from the MODTRAN model for sky brightness, as seen in Figure \ref{fig:modtran}. The unit of kilo-Rayleighs is equvialent to $\frac{10^{9}}{4\pi}$ photons/s/cm$^2$/steradian. Also note that the flux in Figure \ref{fig:modtran} is parameterized by wavelength; this will be important in analyzing the effect of quantum efficiency and optical filtering. %REFERENCE%
 \begin{figure}
     \label{fig:modtran}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=3in]{\rootdir modtran_alt.eps}
     \caption{The sky background is found by interpolation for a 38km flight with 90 degree solar azimuth}
 \end{figure}
 
-Estimating the flux from a star is a more involved process, which owes its complexity to the standard use of visual magnitude ($m_v$) as a measure of star brightness. In order to generalize magnitude to all wavelengths, the temperature of a star (which is also a common value in star catalogues) is used to calculate an empirically-determined correction. %REFERENCE% 
+Estimating the flux from a star is a more involved process, which owes its complexity to the standard use of visual magnitude ($m_v$) as a measure of star brightness. In order to generalize magnitude to all wavelengths, the temperature of a star (which is also a common value in star catalogues) is used to calculate an empirically-determined correction. %REFERENCE%
 This yields the bolometric magnitude via:
 \begin{equation}
     \label{eq:bolometric}
@@ -124,37 +150,61 @@ Once the blackbody curve is known, its area is normalized, at which point flux a
     F_{\sub{star}}(\lambda) = F_{\sub{star,total}}\frac{I(\lambda,T)}{\int_0^\infty I(\lambda,T) \, d\lambda}
 \end{equation}
 
-Now, the flux from the background and star are parameterized by wavelength. This allows us to incorporate the quantum efficiency of the optics and any optical filtering, whose attenuation of light is described by $Q(\lambda)$. At last, the flux seen by the camera from both sources is found by integrating over all wavelengths, though in practice this range is bounded by a longpass filter on one end and the camera QE on the other. 
+Now, the flux from the background and star are parameterized by wavelength. This allows us to incorporate the quantum efficiency of the optics and any optical filtering, whose attenuation of light is described by $Q(\lambda)$. At last, the flux seen by the camera from both sources is found by integrating over all wavelengths, though in practice this range is bounded by a longpass filter on one end and the camera QE on the other.
 \begin{equation}
     \label{eq:totalfluxes}
-    F = \int_{\lambda_1}^{\lambda_2} Q(\lambda) F(\lambda) \, d\lambda 
+    F = \int_{\lambda_1}^{\lambda_2} Q(\lambda) F(\lambda) \, d\lambda
 \end{equation}
 
-At the end of this process, the flux terms in Equation \ref{eq:snr} have been defined in terms of system and operational parameters. The background relies chiefly on altitude, while star flux is a function of visual magnitude and temperature. In addition  
+At the end of this process, the flux terms in Equation \ref{eq:snr} have been defined in terms of system and operational parameters. The background relies chiefly on altitude, while star flux is a function of visual magnitude and temperature. In addition, the units of flux have area and, in the case of the background, solid angle field of view in the denominator. This means the model also depends on the optics aperture size and total field of view.
+
+The final piece of the image quality model is to apply Equation \ref{eq:snr} to a variety of stars to determine which are visible to the star identification algorithms. This reqires a knowledge of the stars DayStar is likely to see. One option is to construct a representative star field from past surveys; an old work by P.J Van Rhijn %REFERENCE%
+is an example of one that categorizes stars by visual magnitude and temperature, and reports the density per steradian of each type of star. A more thorough method could use catalogues like Tycho-2 to simulate actual starfields. For the sake of simplicity, DayStar's performance is estimated using the first method.
+
+Three representative starfields are used, bounded by the $0-20^\circ$, $20-40^\circ$, and $40-90^\circ$ galactic latitude ranges, respectively. Per DayStar's requirements, visual magnitudes 4-8 are considered, and the number of stars across all magnitudes and temperatures are calculated for a representative image. Figure \ref{fig:gl} shows how stars are distributed based on the three galactic latitude ranges.
+\begin{figure}
+    \centering
+    \label{fig:gl}
+    \includegraphics[width = 3.5in]{\rootdir galacticlatitude.jpg}
+    \caption{Stars are distributed by stellar class, which corresponds directly to temperature}%REFERENCE%
+\end{figure}
+
+Every combination of magnitude and temperature is evaluated for $\SNR$. The total flux is also checked against the well depth, and stars that saturate are discarded. For each star with an $\SNR$ greater than 6.0, the fractional number in an average image is summed to find the total number of visible stars. This translates to a total system accuracy via Figure \ref{fig:accuracy}.
 
 \subsection{Performance Analysis}
 
+The modeling processes defined in the previous sections have two applications. The first is system design; sensitivity plots for system parameters can be created by calculating the number of stars over a range. One example that was used in DayStar's design is shown in Figure \ref{fig:longpass}. In this case, the longpass filter wavelength was chosen to maximize accuracy across all exposure times.
+\begin{figure*}
+    \centering
+    \label{fig:longpass}
+    \includegraphics[width = 4.5in]{\rootdir sensitivity.jpg}
+    \caption{The ideal longpass wavelength is between 600nm and 640nm. DayStar uses a 620nm filter.}
+\end{figure*}
 
-
-
-
-Define total performance by looking at stars in FOV by GL.
-
-
+After all of DayStar's parameters had been defined, the modeling was also used to estimate performance during both day and night. In Figure \ref{fig:numstars}, this is broken down by visual magnitude and totaled in the final column. The three daytime estimates correspond to different methods of interpreting tabulated data for star temperature. The nominal method is a linear interpolation between discrete temperatures, while the worst and best cases are bound assuming stepwise functions. The results show that DayStar should be able to see stars in both daytime and nighttime in quantities that satisfy accuracy requirements.
+\begin{figure}[H]
+    \label{fig:numstars}
+    \includegraphics[width = 3.5in]{\rootdir numstars.jpg}
+    \caption{The total number of stars for the worst case galactic latitude satisfies nighttime and daytime requirements}
+\end{figure}
 
 %-------------------------------------------------------------------------------------------------------
 \section{Test Flight Results}
 This is the money section. We will summarize our test flight (very briefly) and then launch into our results. Again, the focus will be on daytime, and we will hammer home how well we see stars and track during the day.
 
 \subsection{Flight and Concept of Operations}
-On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload. The flight was launched out of Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. During this flight DayStar actively operated for 5.5 hours starting operation 2.5 hours before a modelled astronomical sunset at an altitude of 35 km and ending around 17:30 mountain standard time. Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images taken at 10Hz for durations of 20 and 50 seconds respectively were captured. These bursts were taken with varying camera settings (gain and exposure time). During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of the varying background brightness. In total some 460 GB of images and system health and status data was collected. DayStar was 
+On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload. The flight was launched out of Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. During this flight DayStar actively operated for 5.5 hours starting operation 2.5 hours before a modeled astronomical sunset at an altitude of 35 km and ending around 17:30 mountain standard time. Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images taken at 10Hz for durations of 20 and 50 seconds respectively were captured. These bursts were taken with varying camera settings (gain and exposure time). During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of the varying background brightness. In total some 460 GB of images and system health and status data was collected. DayStar was
 mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal.
+
+On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The flight was launched out of Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. During this flight DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 38km and ending around 17:30 mountain standard time.
+
+Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds, respectively. These bursts were taken with varying gain and exposure time. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of the varying background brightness. In total, some 460 GB of images and system health and status data was collected.
 
 \subsection{Analysis}
 Cool graphs:
 1. Star path comparison of frame 0 and 100 frames later
 2. Show different centroiding locations on same image
-3. Number of stars found, matched for daytime and nighttime  
+3. Number of stars found, matched for daytime and nighttime
 4. tracking performance plots: yaw, pitch, roll, for day and night
 
 \subsection{Tracking Performance}
@@ -213,30 +263,28 @@ The authors thank the Office of Naval Research for funding this project.
 
 
 \thebiography
-\begin{biographywithjpg} 
-{Nick Truesdale}{\rootdir Nick.jpg}
-is a graduate student in Aerospace Engineering at the University of Colorado.
-He has been the Electrical Systems Lead for four balloon payloads, and has a wealth of experience designing power sytems and embedded electronics. His other projects have included CubeSats with the University of Colorado and radar scattering simulation with MIT Lincoln Laboratory. Nick enjoys playing guitar and marimba as well as downhill skiing.   
-\end{biographywithjpg}
 
-<<<<<<< HEAD
-\begin{biographywithjpg}{Kevin Dinkel}{\rootdir Kevin.jpg}
-is
-B====D ~~~~~
-\begin{biographywithjpg} {Kevin Dinkel}{\rootdir Kevin.jpg}
-is 
->>>>>>> afaea291f055ea77102aa03a3841659f653e80ef
-\end{biographywithjpg}
 
-\begin{biographywithjpg}{Zach Dischner}{\rootdir Zach.jpg}
+\begin{biographywithpic}{Nick Truesdale}{\rootdir Nick.eps}
+is a graduate student in Aerospace Engineering at the University of Colorado at Boulder.
+He has been the Electrical Systems Lead for four balloon payloads, and has a wealth of experience designing power sytems and embedded electronics. His other projects have included CubeSats with the University of Colorado and radar scattering simulation with MIT Lincoln Laboratory. Nick enjoys playing guitar and marimba as well as downhill skiing.
+\end{biographywithpic}
+
+\begin{biographywithpic} {Kevin Dinkel}{\rootdir Kevin.eps}
+is a graduate student in Aerospace Engineering at the University of Colorado at Boulder. He has been involved in designing and flying 5 balloon payloads as Project Manager, CDH Lead Engineer, and Mission Specialist. Kevin is a skillful software engineer and currently works on planning and scheduling algorithms at the Laboratory for Atmospheric and Space Physics (LASP) for the MMS 4-spacecraft cluster.
+\end{biographywithpic}
+
+\begin{biographywithpic}{Zach Dischner}{\rootdir Zach.eps}
 Zach Dischner graduated with a BS in Aerospace Engineering in 2012 from the University of Colorado at Boulder. Currently, he is a graduate student pursuing a MS in Aerospace Engineering Systems. He is a graduate data systems technician for the Laboratory for Atmospheric and Space Physics (LASP). Zach is a fervent outdoorsman, whose main interests include skiing, kiteboarding, rock climbing, as well as freelance photography.
-\end{biographywithjpg}
 
-\begin{biographywithjpg}{Jed Diller}{\rootdir Jed.jpg}
-is
-\end{biographywithjpg}
+is a notorious womanizer. You can tell from the mugshot at left that his stunning good looks are enough to freeze a doe in her tracks. Zach has won award in six of seven continent for his game. In fact, during a two week span in Mongolia, he picked up a record 98\% of his targets; the only girl who refused his advances later went on to become his wife.
+\end{biographywithpic}
 
-\begin{biographywithjpg}{Eliot F. Young}{\rootdir Eliot.jpg}
+\begin{biographywithpic}{Jed Diller}{\rootdir Jed.eps}
+is a space man. Literally. He hails from the glorious planet of Frakulon in the Horsehead Nebula, and can be seen from time to time riding in a giant silver spaceship shaped remarkably like a cauliflour. Jed enjoys long walks in the park and often talks to ducks and geese in their native language, since they too are aliens. He is also quite adept at climbing and being a playa.
+\end{biographywithpic}
+
+\begin{biographywithpic}{Eliot F. Young}{\rootdir Eliot.eps}
 Eliot F. Young received an A.B .in
 Physics from Amherst College in 1984,
 an S.M. in Aeronautical Engineering
@@ -252,6 +300,6 @@ ton, Eris and other large Trans-Neptunian Objects, as well
 as the distributions of aerosols and trace gases in Titan's
 atmosphere and the wind fields on Venus. He has led ob-
 serving campaigns on four continents.
-\end{biographywithjpg}
+\end{biographywithpic}
 
 \end{document}
