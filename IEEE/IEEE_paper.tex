@@ -158,15 +158,42 @@ Cool graphs:
 4. tracking performance plots: yaw, pitch, roll, for day and night
 
 \subsection{Tracking Performance}
-Without a true attitude solution, it is still possible to obtain a performance metric for how well the DayStar tracks stars. This is done with a purely numerical analysis.
+Without a computed attitude solution, it is still possible to obtain a performance metric for how well DayStar tracks stars. This is done with a purely numerical analysis.
 
-Given a set of images, the first task is to obtain a list of star centroid locations. By comparing the stars in each image to a reference (epoch) set of star vectors, in this case, just the first image in a set, the motion in said star locations can be described as a set of rotations. The "q-method" is a widely used method to determine rotations based on minimizing the rms of the residuals between coordinate frames. It was employed here to find the quaternion rotation between the reference frame and each subsequent.
+Given a set of images, the first task is to obtain a list of star centroid locations. By comparing the stars in each image to a reference (epoch) set of star vectors, in this case, just the first image in a set, the motion in said star locations can be described as a set of rotations. The "q-method" is a widely used method to determine rotations based on minimizing the rms of the residuals between coordinate frames. It was employed here to find the quaternion rotation between the reference frame and each subsequent one. Without pertaining to any particular attitude, each quaternion effective represents the change in attitude solution between frames. Thus, the variability of these attitude changes describes DayStar's precision in providing solutions, but only if the observed frame is assumed totally stationary. Since it was not, the quaternions had to be filtered to make this assumption valid.
 
-Quaternion rotations were then converted into the Euler angles: roll,pitch, and yaw. Each set of angles contain information about the change in star locations in time. The predominant modes of change are low-frequency rotations, and high frequency rotations. The low frequency observations are due to the motion of the gondola, while high frequency observations are due to the inaccuracies of the DayStar system. 
+To perform the filtering, quaternion rotations were then converted into the Euler angles: roll, pitch, and yaw. Each set of angles contain information about the change in star locations in time. The predominant modes of change are low-frequency rotations, and high frequency rotations. The low frequency observations are due to the motion of the balloon gondola, while high frequency observations are due to the inaccuracies of the DayStar system. 
 
-A measure of the system's precision is desired, so the low-frequency rotations need to be removed. This was done by examining the rotations in the frequency domain, using fast fourrier transforms, and applying a high-pass filter to the transformed rotations. Transforming back into the time domain, the rms of each the resulting rotation sets describes DayStar's ability to identify and track stars over an image set. 
+A measure of the system's precision is desired, so the low-frequency rotations need to be removed. This was done by examining the Euler rotations in the frequency domain, using fast fourrier transforms, and applying a high-pass filter to the transformed rotations. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself. 
 
+Below are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
+
+
+\begin{figure}
+    \label{fig:Roll Filtering}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \caption{Roll Signal and Filtering Using FFT}
+\end{figure}
+
+\begin{figure}
+    \label{fig:Pitch Filtering}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \caption{Pitch Signal and Filtering Using FFT}
+\end{figure}
+
+\begin{figure}
+    \label{fig:Yaw Filtering}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \caption{Yaw Signal and Filtering Using FFT}
+\end{figure}
   
+By looking at the pictures, you can see things. Like low frequency motion being filtered out. Then, we do RMS stuff. And then get a final variance
+\begin{displaymath}\large
+	\boxed{Accuracy = XXXXXX arcseconds}
+\end{displaymath}
+
+Yay!!! Then we do it again for daytime, and get more pictures and stuff
+
 
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
@@ -195,14 +222,14 @@ He has been the Electrical Systems Lead for four balloon payloads, and has a wea
 <<<<<<< HEAD
 \begin{biographywithjpg}{Kevin Dinkel}{\rootdir Kevin.jpg}
 is
-=======
+B====D ~~~~~
 \begin{biographywithjpg} {Kevin Dinkel}{\rootdir Kevin.jpg}
 is 
 >>>>>>> afaea291f055ea77102aa03a3841659f653e80ef
 \end{biographywithjpg}
 
 \begin{biographywithjpg}{Zach Dischner}{\rootdir Zach.jpg}
-is
+Zach Dischner graduated with a BS in Aerospace Engineering in 2012 from the University of Colorado at Boulder. Currently, he is a graduate student pursuing a MS in Aerospace Engineering Systems. He is a graduate data systems technician for the Laboratory for Atmospheric and Space Physics (LASP). Zach is a fervent outdoorsman, whose main interests include skiing, kiteboarding, rock climbing, as well as freelance photography.
 \end{biographywithjpg}
 
 \begin{biographywithjpg}{Jed Diller}{\rootdir Jed.jpg}
