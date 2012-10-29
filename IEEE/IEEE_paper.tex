@@ -75,7 +75,7 @@
 
 %-------------------------------------------------------------------------------------------------------
 \section{Introduction}
-This section will introduce the daytime startracker problem, and give the background and motivation necessary to setup our prototype and the importance of its performance.
+This section will introduce the daytime startracker problem, and give the background and motivation necessary to setup our prototype and the importance of its performance. \cite{young2012}
 
 %-------------------------------------------------------------------------------------------------------
 \section{Modeling}
@@ -110,7 +110,6 @@ From Figure \ref{fig:detectstars}, the daytime design-to exposure range was chos
 \end{figure}
 
 For DayStar to successfully identify and centroid a star a minimum $SNR$ of 6.0 was chosen as a design-to specification.
-
 
 \subsection{Image Quality Analysis}
 Given a minimum SNR and a star blur of 4 to 6 pixels square, the goal of the image modeling is to determine the number of stars visible during night and day. This requires identification of signal and noise sources; we assume that the sky background and stars generate Poisson shot noise, and also consider dark current ($\DC$) and read noise ($\RN$) from the image sensor. On a star-by-star basis, SNR is given by Equation \ref{eq:snr}, in which $F$ is the flux from the star or background in photons per second per pixel, $t$ is exposure time in seconds and $n$ is the number of square pixels that totally encompass the star as specified in Figure \ref{fig:blur}.
@@ -221,25 +220,25 @@ Below are plots illustrating the filtering process for each Euler angle for a ba
 
 \begin{figure}
     \label{fig:Roll Filtering}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Roll Signal and Filtering Using FFT}
 \end{figure}
 
 \begin{figure}
     \label{fig:Pitch Filtering}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Pitch Signal and Filtering Using FFT}
 \end{figure}
 
 \begin{figure}
     \label{fig:Yaw Filtering}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Yaw Signal and Filtering Using FFT}
 \end{figure}
   
 By looking at the pictures, you can see things. Like low frequency motion being filtered out. Then, we do RMS stuff. And then get a final variance
 \begin{displaymath}\large
-	\boxed{Accuracy = XXXXXX arcseconds}
+    \boxed{Accuracy = XXXXXX arcseconds}
 \end{displaymath}
 
 Yay!!! Then we do it again for daytime, and get more pictures and stuff
@@ -250,21 +249,11 @@ Yay!!! Then we do it again for daytime, and get more pictures and stuff
 Here we will inspiringly conclude by tying our results and modeling together, and saying why this is so important to the future of balloon science.
 
 %-------------------------------------------------------------------------------------------------------
-\section{References}
-
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,IEEE_paper}
 
 %-------------------------------------------------------------------------------------------------------
-\section{Biography}
-
-\appendices
-
-\acknowledgments
-The authors thank the Office of Naval Research for funding this project.
-
-
 \thebiography
-
-
 \begin{biographywithpic}{Nick Truesdale}{\rootdir Nick.eps}
 is a graduate student in Aerospace Engineering at the University of Colorado at Boulder.
 He has been the Electrical Systems Lead for four balloon payloads, and has a wealth of experience designing power sytems and embedded electronics. His other projects have included CubeSats with the University of Colorado and radar scattering simulation with MIT Lincoln Laboratory. Nick enjoys playing guitar and marimba as well as downhill skiing.
@@ -301,5 +290,8 @@ as the distributions of aerosols and trace gases in Titan's
 atmosphere and the wind fields on Venus. He has led ob-
 serving campaigns on four continents.
 \end{biographywithpic}
+
+\acknowledgments
+The authors would like to thank those from the Wallops Arc Second Pointer team and the Columbia Scientific Balloon Facility for their help in flying DayStar. Thanks also go to Dr. Kim Ennico, Dr. Scott Palo and Trudy Schwartz for their assistance and resources throughout the design process. 
 
 \end{document}
