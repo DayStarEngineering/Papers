@@ -75,13 +75,13 @@
 
 %-------------------------------------------------------------------------------------------------------
 \section{Introduction}
-NASA's Scientific Balloon Program flies large (up to 8000 lb) payloads each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at 120,000 ft, above 99.5\% of the Earth's atmosphere. This is especially advantageous for telescopic observing, providing conditions almost completely devoid of turbulence-induced image degradation. The development of a balloon platform that can image in the visible wavelengths with 0.1`` resolution is of widespread importance in the astronomical community. Ground-based system such as Subaru often look only in infrared wavelengths longer than 1 $\mu$m due to the unacceptable degradation of images taken at shorter wavelengths. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, visible-imaging, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of the year.
+NASA's Scientific Balloon Program flies large (up to $8000 \ lb$) payloads each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at $120,000 \ ft$, above $99.5\%$ of the Earth's atmosphere. This is especially advantageous for telescopic observing, providing conditions almost entirely void of turbulence-induced image degradation. The development of a balloon platform that can image in the visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu m$ due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of the year.
 
-The potential for stratospheric 1- and 2-m telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of this project is to improve tracking (attitude determination) systems to levels capable of supporting these systems. The \textit{de facto} standard for balloon-based attitude determination has become the University of Wisconsin's Star Tracker 5000 (ST5000). With its roots in NASA's sounding rocket program, this instrument provides an affordable way to achieve 0.24 and 0.53 arcsecond $1-\sigma$ pitch and yaw accuracies. The diffraction limit of a 1-m telescope is 0.125'' at $5000 \AA{}$. In order to control a fine steering mirror at this level, an error signal must be provided that is at least as good. While the ST5000 is close, it is still a factor of 5 too coarse to be the sole optical reference.
+The potential for stratospheric 1-m and 2-m telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of this project is to improve tracking (attitude determination) on balloon platforms to levels capable of supporting these systems.
 
+The current standard for balloon-based attitude determination is the University of Wisconsin's Star Tracker 5000 (ST5000). With roots in NASA's sounding rocket program, this instrument was test flown on May 6, 2011 and performed at $0.24''$ and $0.53''$ ($1\sigma$) pitch and yaw accuracies during nighttime. Unfortunately, the ST5000 saturated 30 minutes before sunrise and was unable to provide an attitude signal during the day. The diffraction limit of a 1-m telescope is $0.125''$ at $5000 \AA{}$. In order to control a fine steering mirror at this level, an error signal must be provided that is at least as good. While the ST5000 is close, it is still a factor of 5 too coarse to be the sole optical reference.
 
-
-
+To enable daytime operation and achieve better attitude knowledge, a star tracker needs to be designed with a longer focal length and finer platescale than the ST5000. Two benefits emerge with these changes: the intensity level of the sky background relative to star flux drops and the centroiding of stars becomes more accurate. DayStar, a balloon-borne diurnal star tracker conceived by students from the University of Colorado, has not only been designed to take advantage of these modifications but has further improved daytime capabilities by using a red-sensitive sensor, long-pass filtering, and superior baffling. This paper will detail the modeling of DayStar's performance, describe key components of the DayStar system, and discuss results from DayStar's September 2012 test flight.
 
 %-------------------------------------------------------------------------------------------------------
 \section{Modeling}
@@ -116,7 +116,6 @@ From Figure \ref{fig:detectstars}, the daytime design-to exposure range was chos
 \end{figure}
 
 For DayStar to successfully identify and centroid a star a minimum $SNR$ of 6.0 was chosen as a design-to specification.
-
 
 \subsection{Image Quality Analysis}
 Given a minimum SNR and a star blur of 4 to 6 pixels square, the goal of the image modeling is to determine the number of stars visible during night and day. This requires identification of signal and noise sources; we assume that the sky background and stars generate Poisson shot noise, and also consider dark current ($\DC$) and read noise ($\RN$) from the image sensor. On a star-by-star basis, SNR is given by Equation \ref{eq:snr}, in which $F$ is the flux from the star or background in photons per second per pixel, $t$ is exposure time in seconds and $n$ is the number of square pixels that totally encompass the star as specified in Figure \ref{fig:blur}.
@@ -227,25 +226,25 @@ Below are plots illustrating the filtering process for each Euler angle for a ba
 
 \begin{figure}
     \label{fig:Roll Filtering}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Roll Signal and Filtering Using FFT}
 \end{figure}
 
 \begin{figure}
     \label{fig:Pitch Filtering}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Pitch Signal and Filtering Using FFT}
 \end{figure}
 
 \begin{figure}
     \label{fig:Yaw Filtering}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.jpg}
+    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Yaw Signal and Filtering Using FFT}
 \end{figure}
 
 By looking at the pictures, you can see things. Like low frequency motion being filtered out. Then, we do RMS stuff. And then get a final variance
 \begin{displaymath}\large
-	\boxed{Accuracy = XXXXXX arcseconds}
+    \boxed{Accuracy = XXXXXX arcseconds}
 \end{displaymath}
 
 Yay!!! Then we do it again for daytime, and get more pictures and stuff
@@ -256,21 +255,11 @@ Yay!!! Then we do it again for daytime, and get more pictures and stuff
 Here we will inspiringly conclude by tying our results and modeling together, and saying why this is so important to the future of balloon science.
 
 %-------------------------------------------------------------------------------------------------------
-\section{References}
-
+\bibliographystyle{IEEEtran}
+\bibliography{IEEEabrv,IEEE_paper}
 
 %-------------------------------------------------------------------------------------------------------
-\section{Biography}
-
-\appendices
-
-\acknowledgments
-The authors thank the Office of Naval Research for funding this project.
-
-
 \thebiography
-
-
 \begin{biographywithpic}{Nick Truesdale}{\rootdir Nick.eps}
 is a graduate student in Aerospace Engineering at the University of Colorado at Boulder.
 He has been the Electrical Systems Lead for four balloon payloads, and has a wealth of experience designing power sytems and embedded electronics. His other projects have included CubeSats with the University of Colorado and radar scattering simulation with MIT Lincoln Laboratory. Nick enjoys playing guitar and marimba as well as downhill skiing.
@@ -307,5 +296,8 @@ as the distributions of aerosols and trace gases in Titan's
 atmosphere and the wind fields on Venus. He has led ob-
 serving campaigns on four continents.
 \end{biographywithpic}
+
+\acknowledgments
+The authors would like to thank those from the Wallops Arc Second Pointer team and the Columbia Scientific Balloon Facility for their help in flying DayStar. Thanks also go to Dr. Kim Ennico, Dr. Scott Palo and Trudy Schwartz for their assistance and resources throughout the design process.
 
 \end{document}
