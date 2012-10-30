@@ -291,7 +291,15 @@ Yay!!! Then we do it again for daytime, and get more pictures and stuff
 
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
-Here we will inspiringly conclude by tying our results and modeling together, and saying why this is so important to the future of balloon science.
+Through modeling, testing, and analysis, the DayStar team has shown that its design of a diurnal star tracker is valid. As a prototype unit on a test flight, DayStar was able to observe and centroid stars in daytime conditions, and provide accurate solutions at the nighttime. 
+
+DayStar's main goal at this point is to operate on another test flight within a year's time. Several design shortcomings were identified as the test flight neared. One main design issue was that the power system was contained in a single unit, far from the camera system. The imaging system has stringent power requirements to operate ideally, and the power design currently in place did not meet those requirements. An imaging board, with more power planes, better attention paid to power isolation, and all power regulation done on chip should provide cleaner images. Cleaner images will yield more accurate centroids, and more identifiable stars. 
+
+Another design change would be to add active thermal regulation to key components, specifically, the CMOS image sensor. In flight, the imaging system temperature stayed around 25C. Image noise increases drastically with temperature, and active cooling down to the sensor's optimal temperature range will help provide cleaner images for analysis. 
+
+Finally, the CONOPS used for flight needs to be changed. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. In daytime, exposures were such that the high gain images were fully saturated. Only for a few exposure times were stars identifiable using the low gain images. By adjusting exposure times to ensure that the high gain images were correctly exposed for, improved star identification and tracking performance is expected. 
+
+DayStar expects that with the design and CONOPS changed implemented, future balloon flights would yield better performance in operation and star identification. Both the accuracy in tracking fields, as well as the number of stars observed in daytime and night time conditions will go up, further validating DayStar's capability as a diurnal star tracker.  
 
 %-------------------------------------------------------------------------------------------------------
 \bibliographystyle{IEEEtran}
