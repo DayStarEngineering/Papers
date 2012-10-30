@@ -64,8 +64,8 @@
     Southwest Research Institute\\
     Boulder, CO 80302\\
     efy@boulder.swri.edu
-    \thanks{\footnotesize 978-1-4577-0557-1/12/$\$26.00$ \copyright2012 IEEE.}              
-    \thanks{$^1$ IEEEAC Paper \#2767, Version 1.0, Updated 29/10/2012.} 
+    \thanks{\footnotesize 978-1-4577-0557-1/12/$\$26.00$ \copyright2012 IEEE.}
+    \thanks{$^1$ IEEEAC Paper \#2767, Version 1.0, Updated 29/10/2012.}
 }
 
 \maketitle
@@ -82,8 +82,7 @@
 
 %-------------------------------------------------------------------------------------------------------
 \section{Introduction}
-NASA's Scientific Balloon Program flies large payloads (up to 8000 lb) each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at $120,000$ ft, above $99.5\%$ of the Earth's atmosphere \cite{young2012}. This is especially advantageous for telescopic observing, providing conditions almost entirely devoid of image degradation due to atmospheric turbulence. The development of a balloon platform that can image in visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu$m due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night
-of the year \cite{young2012}.
+NASA's Scientific Balloon Program flies large payloads (up to 8000 lb) each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at $120,000$ ft, above $99.5\%$ of the Earth's atmosphere \cite{young2012}. This is especially advantageous for telescopic observing, providing conditions almost entirely devoid of image degradation due to atmospheric turbulence. The development of a balloon platform that can image in visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu$m due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of the year \cite{young2012}.
 
 The potential for stratospheric 1-m and 2-m telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of this project is to improve tracking (attitude determination) on balloon platforms to levels capable of supporting these systems.
 
@@ -96,7 +95,7 @@ To enable daytime operation and achieve better attitude knowledge, a star tracke
 The performance of DayStar depends on two factors: image quality and algorithm performance. The two are functionally independent, and must be linked by one or more parameters. The primary link is signal-to-noise ratio, $\SNR$, although the size of stars in the image is also important. The following sections describe how a threshold $\SNR$ and star size are determined by star centroiding algorithms, and how image quality analysis is used to support DayStar's design parameters and predict daytime performance.
 
 \subsection{Algorithm Performance}
-The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method \cite{qmethod}, which finds a least squares solution for the rotation between two coordinate frames. 
+The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method \cite{qmethod}, which finds a least squares solution for the rotation between two coordinate frames.
 
 To discover how the q-method performs, a Monte Carlo simulation was conducted. A set of star coordinates was generated and subsequently perturbed using Gaussian random variables. The q-method was then used to calculate the rotation from the original frame to the perturbed frame. The number of stars in the field of view and the magnitude of the perturbations were varied to simulate different levels of star detection and centroiding ability. Figure \ref{fig:accuracy} shows the results of the simulation. The more stars that DayStar is able to locate, the better it can produce accurate attitude solutions.
 \begin{figure}[H]
@@ -173,27 +172,26 @@ Now, the flux from the background and star are parameterized by wavelength. This
 
 At the end of this process, the flux terms in Equation \ref{eq:snr} have been defined in terms of system and operational parameters. The background relies chiefly on altitude, while star flux is a function of visual magnitude and temperature. In addition, the units of flux have area and, in the case of the background, solid angle field of view in the denominator. This means the model also depends on the optics aperture size and total field of view.
 
-The final piece of the image quality model is to apply Equation \ref{eq:snr} to a variety of stars to determine which are visible to the star identification algorithms. This requires a knowledge of the stars DayStar is likely to see. One option is to construct a representative star field from past surveys; an old work by P.J Van Rhijn \cite{vanrhijn} is an example of one that categorizes stars by visual magnitude and temperature, and reports the density per steradian of each type of star. A more thorough method could use catalogs like Tycho-2 to simulate actual starfields. For the sake of simplicity, DayStar's performance is estimated using the first method.
+\begin{figure*}
+    \centering
+    \includegraphics[width = 4.7in]{\rootdir sensitivity.jpg}
+    \caption{The ideal longpass wavelength is between 600nm and 640nm. DayStar uses a 620nm filter.}
+    \label{fig:longpass}
+\end{figure*}
 
-Three representative starfields are used, bounded by the $0-20^\circ$, $20-40^\circ$, and $40-90^\circ$ galactic latitude ranges, respectively. Per DayStar's requirements, visual magnitudes 4-8 are considered, and the number of stars across all magnitudes and temperatures are calculated for a representative image. Figure \ref{fig:gl} shows how stars are distributed based on the three galactic latitude ranges.
+The final piece of the image quality model is to apply Equation \ref{eq:snr} to a variety of stars to determine which are visible to the star identification algorithms. This requires a knowledge of the stars DayStar is likely to see. One option is to construct a representative star field from past surveys; an old work by P.J Van Rhijn \cite{vanrhijn} is an example of one that categorizes stars by visual magnitude and temperature, and reports the density per steradian of each type of star. A more thorough method could use catalogs like Tycho-2 to simulate actual starfields. For the sake of simplicity, DayStar's performance is estimated using the first method.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 3.3in]{\rootdir galacticlatitude.jpg}
     \caption{Stars are distributed by stellar class, which corresponds directly to temperature \protect \cite{stellar}.}
     \label{fig:gl}
 \end{figure}
+Three representative starfields are used, bounded by the $0-20^\circ$, $20-40^\circ$, and $40-90^\circ$ galactic latitude ranges, respectively. Per DayStar's requirements, visual magnitudes 4-8 are considered, and the number of stars across all magnitudes and temperatures are calculated for a representative image. Figure \ref{fig:gl} shows how stars are distributed based on the three galactic latitude ranges.
 
 Every combination of magnitude and temperature is evaluated for $\SNR$. The total flux is also checked against the well depth, and stars that saturate are discarded. For each star with an $\SNR$ greater than 6.0, the fractional number in an average image is summed to find the total number of visible stars. This translates to a total system accuracy via Figure \ref{fig:accuracy}.
 
 \subsection{Performance Analysis}
-
 The modeling processes defined in the previous sections have two applications. The first is system design; sensitivity plots for system parameters can be created by calculating the number of stars over a range. One example that was used in DayStar's design is shown in Figure \ref{fig:longpass}. In this case, the longpass filter wavelength was chosen to maximize accuracy across all exposure times.
-\begin{figure*}
-    \centering
-    \includegraphics[width = 4.5in]{\rootdir sensitivity.jpg}
-    \caption{The ideal longpass wavelength is between 600nm and 640nm. DayStar uses a 620nm filter.}
-    \label{fig:longpass}
-\end{figure*}
 
 After all of DayStar's parameters had been defined, the modeling was also used to estimate performance during both day and night. In Figure \ref{fig:numstars}, this is broken down by visual magnitude and totaled in the final column. The three daytime estimates correspond to different methods of interpreting tabulated data for star temperature. The nominal method is a linear interpolation between discrete temperatures, while the worst and best cases are bound assuming stepwise functions. The results show that DayStar should be able to see stars in both daytime and nighttime in quantities that satisfy accuracy requirements.
 \begin{figure}
@@ -204,7 +202,6 @@ After all of DayStar's parameters had been defined, the modeling was also used t
 
 %-------------------------------------------------------------------------------------------------------
 \section{DayStar Description}
-This section describes the design of the DayStar prototype as well as its September, 2012 test flight.
 
 \subsection{System Design}
 As stated in the introduction, DayStar's goal is to see stars during the daytime with an accuracy of 1 arcsecond. The nighttime accuracy requirement is 0.1 arcseconds. In order to achieve this and improve upon the ST5000, the most important design parameter is sensitivity to red light. DayStar achieves a marked improvement by using a longpass filter at 620nm, as well as a scientific CMOS sensor that has strong near-infrared performance. The CIS2051 CMOS chip from Fairchild Imaging \cite{fairchild}, now BAE Systems, is implemented using a custom PCB, as seen in Figure \ref{fig:cmos}.
@@ -217,7 +214,8 @@ In addition to its red performance, the other advantages of the sCMOS sensor inc
 
 The other advantage of the camera is that it contains many pixels, which helps spread out background light during daytime. The size of the pixels, 6.5$\mu$m, is also advantageous; combined with a long focal length, small pixels improve plate scale, which measures the number of arcseconds subtended by each pixel. The optical system for the test flight was an Olympus lens with a 150mm focal length. Modeling in the previous section takes into account these values in predicting system accuracy.
 \begin{figure}[H]
-    \includegraphics[width=3.3 in]{\rootdir olympus.jpg}
+    \centering
+    \includegraphics[width=3 in]{\rootdir olympus.jpg}
     \caption{An Olympus 150mm, f2.0 camera lens was used for DayStar's test flight \protect\cite{olympus}.}
     \label{fig:olympus}
 \end{figure}
@@ -228,8 +226,11 @@ The rest of the DayStar system is comprised of a baffle for the lens, a computer
     \label{fig:power}
 \end{figure}
 
+%-------------------------------------------------------------------------------------------------------
+\section{Test Flight Results}
+
 \subsection{Flight and Concept of Operations}
-On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The flight was launched out of Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. During this flight DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 38km and ending around 17:30 mountain standard time.
+On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The launched was conducted in Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 38km altitude and ending around 17:30 mountain standard time.
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir daystar_flight.jpg}
@@ -237,11 +238,7 @@ On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Po
     \label{fig:flight}
 \end{figure}
 
-Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds, respectively. These bursts were taken with varying gain and exposure time. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of the varying background brightness. In total, some 460 GB of images and system health and status data was collected.
-
-%-------------------------------------------------------------------------------------------------------
-\section{Test Flight Results}
-This is the money section. We will summarize our test flight (very briefly) and then launch into our results. Again, the focus will be on daytime, and we will hammer home how well we see stars and track during the day.
+Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds, respectively. These bursts were taken with varying gain and exposure time. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of decreasing background brightness. In total, ~460 GB of images and health and status data were collected.
 
 \subsection{Analysis}
 Cool graphs:
@@ -250,7 +247,11 @@ Cool graphs:
 3. Number of stars found, matched for daytime and nighttime
 4. tracking performance plots: yaw, pitch, roll, for day and night
 
+
 \subsection{Tracking Performance}
+Before tracking algorithms can be run, DayStar's 2D centroids must be transformed into 3D vectors pointing from the DayStar sensor, down the optical boresight, to each star center. This transformation is done by:
+
+
 Without a computed attitude solution, it is still possible to obtain a performance metric for how well DayStar tracks stars. This is done with a purely numerical analysis.
 
 Given a set of images, the first task is to obtain a list of star centroid locations. By comparing the stars in each image to a reference (epoch) set of star vectors, in this case, just the first image in a set, the motion in said star locations can be described as a set of rotations. The "q-method" is a widely used method to determine rotations based on minimizing the RMS of the residuals between coordinate frames. It was employed here to find the quaternion rotation between the reference frame and each subsequent one. Without pertaining to any particular attitude, each quaternion effective represents the change in attitude solution between frames. Thus, the variability of these attitude changes describes DayStar's precision in providing solutions, but only if the observed frame is assumed totally stationary. Since it was not, the quaternions had to be filtered to make this assumption valid.
