@@ -274,30 +274,28 @@ The angles were then transformed into the frequency domain, using fast fourrier 
 Below are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
 
 \begin{figure}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
-    \caption{Roll Signal and Filtering Using FFT.}
-    \label{fig:Roll Filtering}
+    \includegraphics[width=2.5in]{\rootdir yaw_1.5Hz_freq.png}
+    \caption{Yaw Signal and Filtering Using FFT.}
+    \label{fig:Yaw Filtering}
 \end{figure}
 
 \begin{figure}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
+    \includegraphics[width=2.5in]{\rootdir pitch_1.5Hz_freq.png}
     \caption{Pitch Signal and Filtering Using FFT.}
     \label{fig:Pitch Filtering}
 \end{figure}
 
 \begin{figure}
-    \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
-    \caption{Yaw Signal and Filtering Using FFT.}
-    \label{fig:Yaw Filtering}
+    \includegraphics[width=2.5in]{\rootdir roll_1.5Hz_freq.png}
+    \caption{Roll Signal and Filtering Using FFT.}
+    \label{fig:Roll Filtering}
 \end{figure}
 
-By looking at the pictures, you can see things. Like low frequency motion being filtered out. Then, we do RMS stuff. And then get a final variance
+You can see that low frequency oscillations are removed by the filtering process. The standard deviation of the norm of the roll, pitch, and yaw is:
+
 \begin{displaymath}\large
-    \boxed{Accuracy = XXXXXX arcseconds}
+    \boxed{\sigma_{RPY} = 2.4647 arcseconds}
 \end{displaymath}
-
-Yay!!! Then we do it again for daytime, and get more pictures and stuff
-
 
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
