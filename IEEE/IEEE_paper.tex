@@ -70,7 +70,8 @@
 
 %-------------------------------------------------------------------------------------------------------
 \section{Introduction}
-NASA's Scientific Balloon Program flies large (up to $8000 \ lb$) payloads each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at $120,000 \ ft$, above $99.5\%$ of the Earth's atmosphere \cite{young}. This is especially advantageous for telescopic observing, providing conditions almost entirely void of image degradation due to atmospheric turbulence. The development of a balloon platform that can image in visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu m$ due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of the year \cite{young}.
+NASA's Scientific Balloon Program flies large (up to $8000 \ lb$) payloads each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at $120,000 \ ft$, above $99.5\%$ of the Earth's atmosphere \cite{young}. This is especially advantageous for telescopic observing, providing conditions almost entirely void of image degradation due to atmospheric turbulence. The development of a balloon platform that can image in visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu m$ due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night
+of the year \cite{young}.
 
 The potential for stratospheric 1-m and 2-m telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of this project is to improve tracking (attitude determination) on balloon platforms to levels capable of supporting these systems.
 
@@ -80,18 +81,18 @@ To enable daytime operation and achieve better attitude knowledge, a star tracke
 
 %-------------------------------------------------------------------------------------------------------
 \section{Modeling}
-The modeling for DayStar is split into two parts: image quality and algorithm performance. The two are functionally independent, and must be linked by one or more parameters. The primary link is signal-to-noise ratio, $\SNR$, though the shape of stars in the image is also important. The following sections describe how a threshold $\SNR$ and star shape are set by the algorithms analysis, and how image quality analysis is then used to support DayStar's design parameters and predict daytime performance.
+The performance of DayStar depends on two factors: image quality and algorithm performance. The two are functionally independent, and must be linked by one or more parameters. The primary link is signal-to-noise ratio, $\SNR$, although the size of stars in the image is also important. The following sections describe how a threshold $\SNR$ and star size are determined by star centroiding algorithms, and how image quality analysis is used to support DayStar's design parameters and predict daytime performance.
 
-\subsection{Algorithms Analysis}
-The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method [CITE], which finds a least squares solution for the rotation between two coordinate frames. To discover how the q-method performs, a Monte Carlo simulation was conducted. A set of star coordinates were generated and subsequently perturbed using Gaussian random variables. The q-method was then used to calculate the rotation from the original frame to the perturbed frame. The number of stars in the field of view and the magnitude of the perturbations were varied to simulate different levels of star detection and centroiding ability. Figure \ref{fig:accuracy} shows the results of the simulation.
+\subsection{Algorithm Performance}
+The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method \cite{qmethod}, which finds a least squares solution for the rotation between two coordinate frames. To discover how the q-method performs, a Monte Carlo simulation was conducted. A set of star coordinates were generated and subsequently perturbed using Gaussian random variables. The q-method was then used to calculate the rotation from the original frame to the perturbed frame. The number of stars in the field of view and the magnitude of the perturbations were varied to simulate different levels of star detection and centroiding ability. Figure \ref{fig:accuracy} shows the results of the simulation.
 \begin{figure}[H]
     \label{fig:accuracy}
     \includegraphics[width=3.5in]{\rootdir accuracy.eps}
     \caption{Attitude accuracy is a function of the centroid accuracy (colored lines) and the number of stars using in the q-method transformation}
 \end{figure}
-The more stars that DayStar is able to locate, the better it will be able to produce accurate attitude solutions.
+The more stars that DayStar is able to locate, the better it can produce accurate attitude solutions.
 
-DayStar locates stars in an image using a custom algorithm which first finds a robust estimation for the background intensity and variance, and then examines pixels above the background to decide if they are stars based on size, shape, and intensity. The performance of this algorithm was tested by generating synthetic star fields, Figure \ref{fig:starfield}, with known star locations and specified $SNR$s. Because DayStar was designed to centroid star images that are slightly out of focus and taken over appreciable exposures, generated stars were approximated as normal distributions. Shot noise was added to each image as a Poisson distributed random variable.
+DayStar locates stars in an image using a custom algorithm which first finds a robust estimation for the background intensity and variance, and then examines pixels above the background to decide if they are stars based on size, shape, and intensity. The performance of this algorithm was tested by generating synthetic star fields, Figure \ref{fig:starfield}, with known star locations and specified $\SNR$s. Because DayStar was designed to centroid star images that are slightly out of focus and taken over appreciable exposures, generated stars were approximated as normal distributions. Shot noise was added to each image as a Poisson distributed random variable.
 \begin{figure}[H]
     \label{fig:starfield}
     \includegraphics[width=3.5in]{\rootdir starfield.eps}
@@ -110,7 +111,7 @@ From Figure \ref{fig:detectstars}, the daytime design-to exposure range was chos
     \caption{The signal to noise ratio of a star is a function of exposure time and the number of pixels over which it is subtended}
 \end{figure}
 
-For DayStar to successfully identify and centroid a star a minimum $SNR$ of 6.0 was chosen as a design-to specification.
+For DayStar to successfully identify and centroid a star a minimum $\SNR$ of 6.0 was chosen as a design-to specification.
 
 \subsection{Image Quality Analysis}
 Given a minimum SNR and a star blur of 4 to 6 pixels square, the goal of the image modeling is to determine the number of stars visible during night and day. This requires identification of signal and noise sources; we assume that the sky background and stars generate Poisson shot noise, and also consider dark current ($\DC$) and read noise ($\RN$) from the image sensor. On a star-by-star basis, SNR is given by Equation \ref{eq:snr}, in which $F$ is the flux from the star or background in photons per second per pixel, $t$ is exposure time in seconds and $n$ is the number of square pixels that totally encompass the star as specified in Figure \ref{fig:blur}.
@@ -206,7 +207,7 @@ The other advantage of the camera is that it contains many pixels, which helps s
     \caption{An Olympus 150mm, f2.0 camera lens was used for DayStar's test flight. \protect\cite{olympus}}
 \end{figure}
 
-The rest of the DayStar system is comprised of a baffle for the lens, a computer and a PCB for power distribution. The computer is a standard off-the-shelf motherboard with an Intel i3 processor. It consumes about 40W at 3.3V, 5V and 12V, which is all supplied by the power board, seen in Figure \ref{fig:power}. The power board also supports the camera, which requires seven power lines between -0.4V and 3.3V. In the flight configuration, all power is converted from a 15V lithium sulfur-dioxide battery, though DayStar may also run off a benchtop supply.   
+The rest of the DayStar system is comprised of a baffle for the lens, a computer and a PCB for power distribution. The computer is a standard off-the-shelf motherboard with an Intel i3 processor. It consumes about 40W at 3.3V, 5V and 12V, which is all supplied by the power board, seen in Figure \ref{fig:power}. The power board also supports the camera, which requires seven power lines between -0.4V and 3.3V. In the flight configuration, all power is converted from a 15V lithium sulfur-dioxide battery, though DayStar may also run off a benchtop supply.
 
 \begin{figure}
     \label{fig:power}
