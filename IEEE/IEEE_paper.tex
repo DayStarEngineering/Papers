@@ -101,31 +101,31 @@ The accuracy to which DayStar can determine its attitude is a function of how ma
 To discover how the q-method performs, a Monte Carlo simulation was conducted. A set of star coordinates were generated and subsequently perturbed using Gaussian random variables. The q-method was then used to calculate the rotation from the original frame to the perturbed frame. The number of stars in the field of view and the magnitude of the perturbations were varied to simulate different levels of star detection and centroiding ability. Figure \ref{fig:accuracy} shows the results of the simulation. The more stars that DayStar is able to locate, the better it can produce accurate attitude solutions.
 \begin{figure}[H]
     \centering
-    \label{fig:accuracy}
     \includegraphics[width=3.3in]{\rootdir accuracy.eps}
     \caption{Attitude accuracy is a function of the centroid accuracy (colored lines) and the number of stars using in the q-method transformation}
+    \label{fig:accuracy}
 \end{figure}
 
 DayStar locates stars in an image using a custom algorithm which first finds a robust estimation for the background intensity and variance, and then examines pixels above the background to decide if they are stars based on size, shape, and intensity. The performance of this algorithm was tested by generating synthetic star fields, Figure \ref{fig:starfield}, with known star locations and specified $\SNR$s. Because DayStar was designed to centroid star images that are slightly out of focus and taken over appreciable exposures, generated stars were approximated as normal distributions. Shot noise was added to each image as a Poisson distributed random variable.
 \begin{figure}
     \centering
-    \label{fig:starfield}
     \includegraphics[width=3.3in]{\rootdir starfield.eps}
     \caption{Simulated starfield with added shot noise}
+    \label{fig:starfield}
 \end{figure}
 The probability of detecting a star is a function of how long the array integrates the star's signal, \textit{exposure time}, and over how many pixels the star's signal is spread, \textit{blur}. Testing the star detection algorithm over a range of different exposure times and blurs, its behavior is characterized below.
 \begin{figure}[H]
     \centering
-    \label{fig:detectstars}
     \includegraphics[width=3.0in]{\rootdir detectstars.eps}
     \caption{The target region represents the exposure time and blur where the star identification algorithm is most successful}
+    \label{fig:detectstars}
 \end{figure}
 From Figure \ref{fig:detectstars}, the daytime design-to exposure range was chosen to be 30-70 ms and the blur was chosen to be between $16$ ($4 \times 4$) and $36$ ($6 \times 6$) pixels. These values correspond to a specific signal to noise ratio depending on the magnitude of star in question. This relationship, shown in Figure \ref{fig:snr}, also varies with blur and exposure time.
 \begin{figure}
     \centering
-    \label{fig:snr}
     \includegraphics[width=3.0in]{\rootdir snr.eps}
     \caption{The signal to noise ratio of a star is a function of exposure time and the number of pixels over which it is subtended}
+    \label{fig:snr}
 \end{figure}
 For DayStar to successfully identify and centroid a star a minimum $\SNR$ of 6.0 was chosen as a design-to specification.
 
@@ -138,9 +138,9 @@ Given a minimum $\SNR$ and a star blur of 4 to 6 pixels square, the goal of the 
 The dark current and read noise are properties of the sensor. The flux from the star and the background, however, must be modeled based on DayStar's environment and pointing. The background flux can be estimated from the MODTRAN \cite{young2012} model for sky brightness, as seen in Figure \ref{fig:modtran}. The unit of kilo-Rayleighs is equvialent to $\frac{10^{9}}{4\pi}$ photons/s/cm$^2$/steradian. Note that the flux in Figure \ref{fig:modtran} is parameterized by wavelength, which allows us to apply the effects of quantum efficiency and filtering. Also note that the background decreases sharply for longer wavelengths; this characteristic is exploited to achieve daytime performance using a longpass filter.
 \begin{figure}[H]
     \centering
-    \label{fig:modtran}
     \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{The sky background is found by interpolation for a 38km flight with 90 degree solar azimuth}
+    \label{fig:modtran}
 \end{figure}
 
 Estimating the flux from a star is a more involved process, which owes its complexity to the standard use of visual magnitude ($m_v$) as a measure of star brightness. In order to generalize magnitude to all wavelengths, the temperature of a star (which is also a common value in star catalogues) is used to calculate an empirically-determined correction \cite{bolometric}. This yields the bolometric magnitude via:
@@ -177,9 +177,9 @@ The final piece of the image quality model is to apply Equation \ref{eq:snr} to 
 Three representative starfields are used, bounded by the $0-20^\circ$, $20-40^\circ$, and $40-90^\circ$ galactic latitude ranges, respectively. Per DayStar's requirements, visual magnitudes 4-8 are considered, and the number of stars across all magnitudes and temperatures are calculated for a representative image. Figure \ref{fig:gl} shows how stars are distributed based on the three galactic latitude ranges.
 \begin{figure}[H]
     \centering
-    \label{fig:gl}
     \includegraphics[width = 3.3in]{\rootdir galacticlatitude.jpg}
     \caption{Stars are distributed by stellar class, which corresponds directly to temperature \protect \cite{stellar}}
+    \label{fig:gl}
 \end{figure}
 
 Every combination of magnitude and temperature is evaluated for $\SNR$. The total flux is also checked against the well depth, and stars that saturate are discarded. For each star with an $\SNR$ greater than 6.0, the fractional number in an average image is summed to find the total number of visible stars. This translates to a total system accuracy via Figure \ref{fig:accuracy}.
@@ -189,16 +189,16 @@ Every combination of magnitude and temperature is evaluated for $\SNR$. The tota
 The modeling processes defined in the previous sections have two applications. The first is system design; sensitivity plots for system parameters can be created by calculating the number of stars over a range. One example that was used in DayStar's design is shown in Figure \ref{fig:longpass}. In this case, the longpass filter wavelength was chosen to maximize accuracy across all exposure times.
 \begin{figure*}
     \centering
-    \label{fig:longpass}
     \includegraphics[width = 4.5in]{\rootdir sensitivity.jpg}
     \caption{The ideal longpass wavelength is between 600nm and 640nm. DayStar uses a 620nm filter.}
+    \label{fig:longpass}
 \end{figure*}
 
 After all of DayStar's parameters had been defined, the modeling was also used to estimate performance during both day and night. In Figure \ref{fig:numstars}, this is broken down by visual magnitude and totaled in the final column. The three daytime estimates correspond to different methods of interpreting tabulated data for star temperature. The nominal method is a linear interpolation between discrete temperatures, while the worst and best cases are bound assuming stepwise functions. The results show that DayStar should be able to see stars in both daytime and nighttime in quantities that satisfy accuracy requirements.
 \begin{figure}
-    \label{fig:numstars}
     \includegraphics[width = 3.3in]{\rootdir numstars.jpg}
     \caption{The total number of stars for the worst case galactic latitude satisfies nighttime and daytime requirements}
+    \label{fig:numstars}
 \end{figure}
 
 %-------------------------------------------------------------------------------------------------------
@@ -208,32 +208,32 @@ This section describes the design of the DayStar prototype as well as its Septem
 \subsection{System Design}
 As stated in the introduction, DayStar's goal is to see stars during the daytime with an accuracy of 1 arcsecond. The nightime accuracy requirement is 0.1 arcseconds. In order to achieve this and improve upon the ST5000, the most important design parameter is sensitivity to red light. DayStar achieves a marked improvement by using a longpass filter at 620nm, as well as a scientific CMOS sensor that has strong near-infrared performance. The CIS2051 CMOS chip from Fairchild Imaging \cite{fairchild}, now BAE Systems, is implemented using a custom PCB, as seen in Figure \ref{fig:cmos}.
 \begin{figure}[H]
-    \label{fig:cmos}
     \includegraphics[width = 3.3in]{\rootdir cmos.jpg}
     \caption{A custom PCB was designed to interface with the CIS2051 and was assembled in house.}
+    \label{fig:cmos}
 \end{figure}
 In addition to its red performance, the other advantages of the sCMOS sensor include its very low read noise and dark current, as well as a high pixel count (5.5 megapixels). The noise charateristics are less important for daytime, since background scattering dominates performance. However, at night, the lack of noise helps yield very crisp, high quality images. It should be noted that for this test flight, DayStar had power issues that generated excess read noise, resulting in grainy nighttime photos. Future improvements to the power system will be necessary to optimize performance.
 
 The other advantage of the camera is that it contains many pixels, which helps spread out background light during daytime. The size of the pixels, 6.5$\mu$m, is also advantageous; combined with a long focal length, small pixels improve plate scale, which measures the number of arcseconds subtended by each pixel. The optical system for the test flight was an Olympus lens with a 150mm focal length. Modeling in the previous section takes into account these values in predicting system accuracy.
 \begin{figure}[H]
-    \label{fig:olympus}
     \includegraphics[width=3.3 in]{\rootdir olympus.jpg}
     \caption{An Olympus 150mm, f2.0 camera lens was used for DayStar's test flight. \protect\cite{olympus}}
+    \label{fig:olympus}
 \end{figure}
 The rest of the DayStar system is comprised of a baffle for the lens, a computer and a PCB for power distribution. The computer is a standard off-the-shelf motherboard with an Intel i3 processor. It consumes about 40W at 3.3V, 5V and 12V, which is all supplied by the power board, seen in Figure \ref{fig:power}. The power board also supports the camera, which requires seven power lines between -0.4V and 3.3V. In the flight configuration, all power is converted from a 15V lithium sulfur-dioxide battery, though DayStar may also run off a benchtop supply.
 \begin{figure}[H]
-    \label{fig:power}
     \includegraphics[width=3.3in]{\rootdir eps.jpg}
     \caption{The power board converts voltages for the entire payload.}
+    \label{fig:power}
 \end{figure}
 
 \subsection{Flight and Concept of Operations}
 On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The flight was launched out of Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. During this flight DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 38km and ending around 17:30 mountain standard time.
 \begin{figure}
     \centering
-    \label{fig:flight}
     \includegraphics[width = 3.3in]{\rootdir daystar_flight.jpg}
     \caption{Daystar consisted of an optical and imaging segment, a computer and a battery. It was mounted below the WASP telescope faccimile.}
+    \label{fig:flight}
 \end{figure}
 
 Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds, respectively. These bursts were taken with varying gain and exposure time. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of the varying background brightness. In total, some 460 GB of images and system health and status data was collected.
@@ -262,21 +262,21 @@ Below are plots illustrating the filtering process for each Euler angle for a ba
 
 
 \begin{figure}
-    \label{fig:Roll Filtering}
     \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Roll Signal and Filtering Using FFT}
+    \label{fig:Roll Filtering}
 \end{figure}
 
 \begin{figure}
-    \label{fig:Pitch Filtering}
     \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Pitch Signal and Filtering Using FFT}
+    \label{fig:Pitch Filtering}
 \end{figure}
 
 \begin{figure}
-    \label{fig:Yaw Filtering}
     \includegraphics[width=2.5in]{\rootdir modtran_alt.eps}
     \caption{Yaw Signal and Filtering Using FFT}
+    \label{fig:Yaw Filtering}
 \end{figure}
 
 By looking at the pictures, you can see things. Like low frequency motion being filtered out. Then, we do RMS stuff. And then get a final variance
