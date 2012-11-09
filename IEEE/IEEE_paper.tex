@@ -68,6 +68,9 @@
     \thanks{$^1$ IEEEAC Paper \#2767, Version 1.0, Updated 29/10/2012.}
 }
 
+\thispagestyle{plain}
+\pagestyle{plain}
+
 \maketitle
 
 \begin{abstract}
@@ -287,11 +290,11 @@ Before tracking algorithms can be run, DayStar's 2D centroids must be transforme
 
 \begin{equation}
 \vec{R}_{star} = \frac{1}{\sqrt{f^2 + \Delta{x^2} + \Delta{y^2}}}
-		  \begin{bmatrix}
-                  \Delta{x} \\
-                  \Delta{y} \\
-                  f
-                 \end{bmatrix}
+    \begin{bmatrix}
+    \Delta{x} \\
+    \Delta{y} \\
+    f
+    \end{bmatrix}
 \end{equation}
 
 where $\Delta{x}$ and $\Delta{y}$ are the pixel offsets of the star centroid from the image origin, and $f$ is the focal length of DayStar's optics. A set of 3D unit vectors is generated for each star in every one of DayStar's images.
@@ -300,9 +303,36 @@ The matching star vectors between frames can be used to find the attitude rotati
 
 Even though DayStar's innertial attitude is unknown, the variability of relative attitude changes describes DayStar's tracking precision. However, this assumes that the WASP platform was totally stationary during the entirety of the burst. Because we know this is not true, we assume that the motion of the WASP gondola can mostly be characterized by low frequency modes, and that DayStar's attitude variabililty is at a much higher frequency. To isolate the two effects filtering was performed in the frequency domain.
 
-To perform the filtering, quaternion rotations were converted into the Euler angles: yaw, pitch, and roll. The angles were then transformed into the frequency domain, using fast Fourier transforms. A high-pass filter was then applied to remove frequencies lower than 1.5 Hz. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself.
+To perform the filtering, quaternion rotations were converted into the Euler angles: yaw, pitch, and roll.
 
-%Below are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
+The angles were then transformed into the frequency domain, using fast fourrier transforms. A high-pass filter was then applied to remove frequencies lower than 1.5 Hz. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself.
+
+Below are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
+
+\begin{figure*}
+    \centering	
+    \includegraphics[width=7.5in]{\rootdir yaw_1.5Hz_freq.png}
+    \caption{Yaw Signal and Filtering Using FFT.}
+    \label{fig:Yaw Filtering}
+\end{figure*}
+\begin{figure*}
+    \centering
+    \includegraphics[width=7.5in]{\rootdir pitch_1.5Hz_freq.png}
+    \caption{Pitch Signal and Filtering Using FFT.}
+    \label{fig:Pitch Filtering}
+\end{figure*}
+\begin{figure*}
+    \centering
+    \includegraphics[width=7.5in]{\rootdir roll_1.5Hz_freq.png}
+    \caption{Roll Signal and Filtering Using FFT.}
+    \label{fig:Roll Filtering}
+\end{figure*}
+
+You can see that low frequency oscillations are removed by the filtering process. The standard deviation of the norm of the roll, pitch, and yaw is:
+
+\begin{displaymath}\large
+    \boxed{\sigma_{RPY} = 2.4647 arcseconds}
+\end{displaymath}
 
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
