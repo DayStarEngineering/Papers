@@ -234,7 +234,7 @@ The rest of the DayStar system is comprised of a baffle for the lens, a computer
 \section{Test Flight Results}
 
 \subsection{Flight and Concept of Operations}
-On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The launched was conducted in Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 38km altitude and ending around 17:30 mountain standard time.
+On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The launch was conducted in Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 35km altitude and ending around 17:30 mountain standard time.
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir daystar_flight.jpg}
@@ -242,10 +242,10 @@ On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Po
     \label{fig:flight}
 \end{figure}
 
-Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds, respectively. These bursts were taken with varying gain and exposure time. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of decreasing background brightness. In total, ~460 GB of images and health and status data were collected.
+Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds were taken respectively. These bursts were taken with varying gain and exposure times. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of decreasing background brightness. In total, ~460 GB of images and health and status data were collected.
 
 \subsection{Analysis}
-The analysis method chosen to analyze the flight data collected stared with finding star in the images collected. Stars were located in images by first estimating the image background using a robust median. Pixels and groups of pixels above this background median by a certain threshold were identified as potential stars. Once as a potential star was identified a region of interest in the image around a potential star was analysed. The column noise inherent in a CMOS images was first subtracted from the columns in the region of interest by subtracting the robust median (to 2 sigma) of each column from that column. If the potential star was of a certain size, large enough to be considered a star rather than noise, a more precise centroid for that star was computed using an intensity weighted center of gravity. A comparison of the three algorithms explore for this refined centroiding can be seen in the image below. 
+The analysis method chosen to analyse the flight data started with finding stars in the images collected. Stars were located in images by first estimating the image background using a robust median. Pixels and groups of pixels above this background median by a certain threshold were identified as potential stars. Once as a potential star was identified a region of interest in the image around a potential star was analysed. The column noise inherent in a CMOS images was first subtracted from the columns in the region of interest by subtracting the robust median (to 2 sigma) of each column from that column. If the potential star was of a certain size, large enough to be considered a star rather than noise, a more precise centroid for that star was computed using an intensity weighted center of gravity centroiding algorithm. A comparison of the three algorithms explored for this refined centroiding can be seen in Figure \ref{fig:centroidmethods}. 
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir centroidmethods.png}
@@ -253,7 +253,7 @@ The analysis method chosen to analyze the flight data collected stared with find
     \label{fig:centroidmethods}
 \end{figure}
 
-After identifying the stars in each image and calculating a refined centroid for each star, a composite image showing the travel of star locations as the number of frame progresses in a burst could be created. The image below is a composite image showing circled star locations found in each image for a 500 image burst during nighttime operation. The streaks show clear travel of stars, primarily in the yaw axis.
+After identifying the stars in each image and calculating a refined centroid for each star, a composite image showing the travel of star locations as the number of frames progressed in a burst could be created. The image below is a composite image showing circled star locations found in each image for a 500 image burst during nighttime operation. The streaks show clear travel of stars, primarily in the yaw axis in Figure \ref{fig:starpaths}.
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir starpaths.png}
@@ -261,7 +261,7 @@ After identifying the stars in each image and calculating a refined centroid for
     \label{fig:starpaths}
 \end{figure}
 
-It is also clear that our star identification picked up on false stars as seen in the column noise on the left hand side of the figure above. The circle star that did not streak as a function of frames may also be false noise stars or star that were faint enough to only be detectable in a small number of frames.The number of stars detected is expected to stay near constant in on of these burst because the WASP gondola was under pointing control to within one degree and DayStar has a 8.3 degree field of view . There may have been stars lost on the edges of any given image but the number of stars should stay relatively constant. The figure below shows the number of stars detected in a 500 image burst.
+It is also clear that our star identification picked up on false stars as seen in the column noise on the left hand side of Figure \ref{fig:starpaths} . The circled stars that did not streak as a function of frames may also be false noise stars or star that were faint enough to only be detectable in a small number of frames. The number of stars detected is expected to stay near constant in one of these burst because the WASP gondola was under pointing control to within one degree and DayStar has a 8.3 degree field of view . There may have been stars lost on the edges of any given image but the number of stars should stay relatively constant. Figure \ref{fig:numstars} shows the number of stars detected in a 500 image burst.
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir numstars.png}
@@ -269,7 +269,7 @@ It is also clear that our star identification picked up on false stars as seen i
     \label{fig:numstars}
 \end{figure}
 
-With the stars identified in each frame of a 500 image burst identified, the next step was to correlate stars between frames. This was done by searching between one frame and the next for star location within a search radius relative to the first frame. In the figure below the star locations of matched stars, and the number of stars matched for the same 500 image burst.  
+With the stars identified in each frame of a 500 image burst identified, the next step was to correlate stars between frames. This was done by searching between one frame and the next for star locations within a search radius relative to the first frame. In Figure \ref{fig:matchstarpaths} and Figure \ref{fig:matchnumstars} the star locations of matched stars and the number of stars matched for the same 500 image burst are shown.  
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir matchstarpaths.png}
@@ -283,7 +283,7 @@ With the stars identified in each frame of a 500 image burst identified, the nex
     \label{fig:matchnumstars}
 \end{figure}
 
-The number of stars matched between frames is lower than the number of stars detected. This makes sense because the false star or fainter stars identified periodically are not correlated between frames. With star locations correlated between images, the next step was to calculate 3D projections of the optical frame and determine a quaternian rotation between frames.   
+The number of stars matched between frames is lower than the number of stars detected. This makes sense because the false noise stars or fainter stars identified periodically are not correlated between frames. With star locations correlated between images, the next step was to calculate 3D projections of the optical frame and determine a quaternion rotation between frames.   
 
 \subsection{Tracking Performance}
 Before tracking algorithms can be run, DayStar's 2D centroids must be transformed into 3D vectors pointing from the DayStar sensor, down the optical boresight, to each star center. This transformation is computed by:
