@@ -230,38 +230,38 @@ The rest of the DayStar system is comprised of a baffle for the lens, a computer
     \label{fig:power}
 \end{figure}
 
-%-------------------------------------------------------------------------------------------------------
-\section{Test Flight Results}
-
 \subsection{Flight and Concept of Operations}
 On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The launch was conducted in Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 35km altitude and ending around 17:30 mountain standard time.
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir daystar_flight.jpg}
-    \caption{DayStar consisted of an optical and imaging segment, a computer and a battery. It was mounted below the WASP telescope facsimile.}
+    \caption{DayStar consisted of an optical and imaging segment, a computer and a battery mounted below the WASP telescope.}
     \label{fig:flight}
 \end{figure}
 
 Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds were taken respectively. These bursts were taken with varying gain and exposure times. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of decreasing background brightness. In total, ~460 GB of images and health and status data were collected.
 
+%-------------------------------------------------------------------------------------------------------
+\section{Test Flight Results}
+
 \subsection{Analysis}
-The analysis method chosen to analyse the flight data started with finding stars in the images collected. Stars were located in images by first estimating the image background using a robust median. Pixels and groups of pixels above this background median by a certain threshold were identified as potential stars. Once as a potential star was identified a region of interest in the image around a potential star was analysed. The column noise inherent in a CMOS images was first subtracted from the columns in the region of interest by subtracting the robust median (to 2 sigma) of each column from that column. If the potential star was of a certain size, large enough to be considered a star rather than noise, a more precise centroid for that star was computed using an intensity weighted center of gravity centroiding algorithm. A comparison of the three algorithms explored for this refined centroiding can be seen in Figure \ref{fig:centroidmethods}. 
-\begin{figure}
+The analysis of DayStar's test flight data began by finding stars in the images collected. Stars were located in images by first estimating the image background using a robust median. Pixels and groups of pixels that surpassed this background median by a threshold were identified as potential stars. Once a potential star was identified, a region of interest in the image around a potential star was defined. The column noise inherent in a CMOS images was subtracted from the columns in the region of interest by subtracting the robust median (to 2 sigma) of each column from that column. If the potential star was large enough to be considered a star rather than noise, a more precise centroid for that star was computed using an intensity weighted center of gravity centroiding algorithm. A comparison of the three algorithms explored for this refined centroiding can be seen in Figure \ref{fig:centroidmethods}. 
+\begin{figure}[H]
     \centering
     \includegraphics[width = 3.3in]{\rootdir centroidmethods.png}
     \caption{Comparison of weighted center of gravity (red), center of gravity (green), and Gaussian centroid methods on a typical star after region of interest column subtraction.}
     \label{fig:centroidmethods}
 \end{figure}
 
-After identifying the stars in each image and calculating a refined centroid for each star, a composite image showing the travel of star locations as the number of frames progressed in a burst could be created. The image below is a composite image showing circled star locations found in each image for a 500 image burst during nighttime operation. The streaks show clear travel of stars, primarily in the yaw axis in Figure \ref{fig:starpaths}.
-\begin{figure}
+After identifying the stars in each image and calculating a refined centroid for each star, a composite image showing the travel of star locations as the number of frames progressed in a burst was created. The image in Figure \ref{fig:starpaths} is a composite image showing circled star locations found in each image for a 500 image burst during nighttime operation. The streaks show clear travel of stars, primarily in the yaw axis.
+\begin{figure}[H]
     \centering
     \includegraphics[width = 3.3in]{\rootdir starpaths.png}
     \caption{Star positions over a 500 image burst during nightime operation.}
     \label{fig:starpaths}
 \end{figure}
 
-It is also clear that our star identification picked up on false stars as seen in the column noise on the left hand side of Figure \ref{fig:starpaths} . The circled stars that did not streak as a function of frames may also be false noise stars or star that were faint enough to only be detectable in a small number of frames. The number of stars detected is expected to stay near constant in one of these burst because the WASP gondola was under pointing control to within one degree and DayStar has a 8.3 degree field of view . There may have been stars lost on the edges of any given image but the number of stars should stay relatively constant. Figure \ref{fig:numstars} shows the number of stars detected in a 500 image burst.
+It is also clear that star identification picked up false stars; this is seen in the column noise on the left hand side of Figure \ref{fig:starpaths}. The circled stars that did not streak as a function of frames may also be false noise stars or stars that were faint enough to only be detectable in a small number of frames. The number of stars detected is expected to stay near constant in one of these bursts because the WASP gondola was under pointing control to within one degree and DayStar has an 8.3 degree field of view. Figure \ref{fig:numstars} shows the number of stars detected in a 500 image burst.
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir numstars.png}
@@ -269,7 +269,7 @@ It is also clear that our star identification picked up on false stars as seen i
     \label{fig:numstars}
 \end{figure}
 
-With the stars identified in each frame of a 500 image burst identified, the next step was to correlate stars between frames. This was done by searching between one frame and the next for star locations within a search radius relative to the first frame. In Figure \ref{fig:matchstarpaths} and Figure \ref{fig:matchnumstars} the star locations of matched stars and the number of stars matched for the same 500 image burst are shown.  
+With the stars identified in each frame identified, the next step was to correlate stars between frames. This was done by searching between one frame and the next for star locations within a search radius relative to the first frame. In Figure \ref{fig:matchstarpaths} and Figure \ref{fig:matchnumstars} the star locations of matched stars and the number of stars matched for the same 500 image burst are shown.  
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir matchstarpaths.png}
@@ -287,28 +287,18 @@ The number of stars matched between frames is lower than the number of stars det
 
 \subsection{Tracking Performance}
 Before tracking algorithms can be run, DayStar's 2D centroids must be transformed into 3D vectors pointing from the DayStar sensor, down the optical boresight, to each star center. This transformation is computed by:
-
 \begin{equation}
-\vec{R}_{star} = \frac{1}{\sqrt{f^2 + \Delta{x^2} + \Delta{y^2}}}
-    \begin{bmatrix}
-    \Delta{x} \\
-    \Delta{y} \\
-    f
-    \end{bmatrix}
+    \vec{R}_{star} = \frac{1}{\sqrt{f^2 + \Delta{x^2} + \Delta{y^2}}} \arrayb{c}{\Delta{x} \\ \Delta{y} \\ f}
 \end{equation}
-
 where $\Delta{x}$ and $\Delta{y}$ are the pixel offsets of the star centroid from the image origin, and $f$ is the focal length of DayStar's optics. A set of 3D unit vectors is generated for each star in every one of DayStar's images.
 
 The matching star vectors between frames can be used to find the attitude rotation between each frame using the q-method. After this is done for an entire image burst, DayStar's attitude can be mapped over time relative to the attitude of the first image.
 
-Even though DayStar's innertial attitude is unknown, the variability of relative attitude changes describes DayStar's tracking precision. However, this assumes that the WASP platform was totally stationary during the entirety of the burst. Because we know this is not true, we assume that the motion of the WASP gondola can mostly be characterized by low frequency modes, and that DayStar's attitude variabililty is at a much higher frequency. To isolate the two effects filtering was performed in the frequency domain.
+Even though DayStar's innertial attitude is unknown, the variability of relative attitude changes describes DayStar's tracking precision. However, this assumes that the WASP platform was totally stationary during the entirety of the burst. Because we know this is not true, we assume that the motion of the WASP gondola can mostly be characterized by low frequency modes, and that DayStar's attitude variabililty is at a much higher frequency. To isolate the two effects filtering was performed in the frequency domain. To perform the filtering, quaternion rotations were converted into the following Euler angles: yaw, pitch, and roll.
 
-To perform the filtering, quaternion rotations were converted into the Euler angles: yaw, pitch, and roll.
-
-The angles were then transformed into the frequency domain, using fast fourrier transforms. A high-pass filter was then applied to remove frequencies lower than 1.5 Hz. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself.
+The angles were then transformed into the frequency domain, using Fast Fourier transforms. A high-pass filter was then applied to remove frequencies lower than 1.5 Hz. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself.
 
 Below are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
-
 \begin{figure*}
     \centering	
     \includegraphics[width=7.5in]{\rootdir yaw_1.5Hz_freq.png}
@@ -328,8 +318,7 @@ Below are plots illustrating the filtering process for each Euler angle for a ba
     \label{fig:Roll Filtering}
 \end{figure*}
 
-You can see that low frequency oscillations are removed by the filtering process. The standard deviation of the norm of the roll, pitch, and yaw is:
-
+It is apparent that low frequency oscillations are removed by the filtering process. The standard deviation of the norm of the roll, pitch, and yaw is:
 \begin{displaymath}\large
     \boxed{\sigma_{RPY} = 2.4647 arcseconds}
 \end{displaymath}
