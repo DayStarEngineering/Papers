@@ -1,0 +1,4 @@
+# odd LaTeX files
+*.aux
+*.gz
+*.log
