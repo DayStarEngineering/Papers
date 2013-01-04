@@ -276,9 +276,28 @@ This section details nighttime results. Establish the images we are using: high-
 \subsection{Daytime Results}
 
 Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused high-gain images to saturate, so only the low-gain images were usable. These images displayed much more column bias than their high-gain counterparts, making daytime analysis more difficult. 
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=3.3in]{\rootdir day_raw.png}
+    \caption{A raw image taken at ??? during the day. The influence of daytime scattering is evident, and no stars are readily visible.}
+    \label{fig:day_raw}
+\end{figure}
 
-Figure ??? shows a raw image taken during twilight. High levels of column noise are readily apparent. These were removed using the image normalization routine discussed in above. The result is shown in ???.
+Figure \ref{fig:day_raw} shows a raw image taken during twilight. High levels of column noise are readily apparent. These were removed using the image normalization routine discussed in above. The result is shown in Figure \ref{fig:day_processed}. This processed image has had the background subtracted and is multiplied by three.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=3.3in]{\rootdir day_processed.png}
+    \caption{When the same image is processed with flat-fielding and background subtraction, three stars become visible.}
+    \label{fig:day_processed}
+\end{figure}
 
+Figure \ref{fig:day_zoom} shows one of the stars seen in the daytime image. The fact that DayStar was able to see this in high ambient light conditions proves the feasibility of a daytime star tracker. However, there are only three stars; this is not enough to provide accurate tracking knowledge. Future revisions of DayStar must remove more systematic noise and aberrations before daytime tracking can be provided with the same precision as nighttime tracking.
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=3.3in]{\rootdir day_zoom.png}
+    \caption{A zoomed view shows what daytime stars look like, once noise and sky brightness are removed.}
+    \label{fig:day_zoom}
+\end{figure}
 
 %-------------------------------------------------------------------------------------------------------
 \subsection{Old Material}
