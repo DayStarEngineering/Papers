@@ -330,7 +330,7 @@ With the stars identified in each frame identified, the next step was to correla
 The number of stars matched between frames is lower than the number of stars detected. This makes sense because the false noise stars or fainter stars identified periodically are not correlated between frames. With star locations correlated between images, the next step was to calculate 3D projections of the optical frame and determine a quaternion rotation between frames.   
 
 \subsubsection{Tracking Performance}
-Before tracking algorithms can be run, DayStar's 2D centroids must be transformed into 3D vectors pointing from the DayStar sensor, down the optical boresight, to each star center. This transformation is computed by:
+Before tracking algorithms can be run, DayStar's 2D centroids must be transformed into 3D vectors pointing from the DayStar sensor, down the optical bore-sight, to each star center. This transformation is computed by:
 \begin{equation}
     \vec{R}_{star} = \frac{1}{\sqrt{f^2 + \Delta{x^2} + \Delta{y^2}}} \arrayb{c}{\Delta{x} \\ \Delta{y} \\ f}
 \end{equation}
@@ -338,45 +338,55 @@ where $\Delta{x}$ and $\Delta{y}$ are the pixel offsets of the star centroid fro
 
 The matching star vectors between frames can be used to find the attitude rotation between each frame using the q-method. After this is done for an entire image burst, DayStar's attitude can be mapped over time relative to the attitude of the first image.
 
-Even though DayStar's innertial attitude is unknown, the variability of relative attitude changes describes DayStar's tracking precision. However, this assumes that the WASP platform was totally stationary during the entirety of the burst. Because we know this is not true, we assume that the motion of the WASP gondola can mostly be characterized by low frequency modes, and that DayStar's attitude variabililty is at a much higher frequency. To isolate the two effects filtering was performed in the frequency domain. To perform the filtering, quaternion rotations were converted into the following Euler angles: yaw, pitch, and roll.
+Even though DayStar's inertial attitude is unknown, the variability of relative attitude changes describes DayStar's tracking precision. However, this assumes that the WASP platform was totally stationary during the entirety of the burst. Because we know this is not true, we assume that the motion of the WASP gondola can mostly be characterized by low frequency modes, and that DayStar's attitude variability is at a much higher frequency. To isolate the two effects filtering was performed in the frequency domain. For the first step in filtering, quaternion rotations were converted into the following Euler angles: yaw, pitch, and roll.
 
 The angles were then transformed into the frequency domain, using Fast Fourier transforms. A high-pass filter was then applied to remove frequencies lower than 1.5 Hz. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself.
 
-Below are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
-\begin{figure*}
+Figure \ref{fig:Yaw Filtering}, Figure \ref{fig:Pitch Filtering}, and \ref{fig:Roll Filtering} are plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
+\begin{figure}[H]
     \centering	
-    \includegraphics[width=7.5in]{\rootdir yaw_1.5Hz_freq.png}
+    \includegraphics[width=3.3in]{\rootdir YawTracking.png}
     \caption{Yaw Signal and Filtering Using FFT.}
     \label{fig:Yaw Filtering}
-\end{figure*}
-\begin{figure*}
+\end{figure}
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=7.5in]{\rootdir pitch_1.5Hz_freq.png}
+    \includegraphics[width=3.3in]{\rootdir PitchTracking.png}
     \caption{Pitch Signal and Filtering Using FFT.}
     \label{fig:Pitch Filtering}
-\end{figure*}
-\begin{figure*}
+\end{figure}
+
+\begin{figure}[H]
     \centering
-    \includegraphics[width=7.5in]{\rootdir roll_1.5Hz_freq.png}
+    \includegraphics[width=3.3in]{\rootdir RollTracking.png}
     \caption{Roll Signal and Filtering Using FFT.}
     \label{fig:Roll Filtering}
-\end{figure*}
+\end{figure}
 
-It is apparent that low frequency oscillations are removed by the filtering process. The standard deviation of the norm of the roll, pitch, and yaw is:
+It is apparent that low frequency oscillations are removed by the filtering process. The standard deviation of the of the roll, pitch, and yaw is:
 \begin{displaymath}\large
-    \boxed{\sigma_{RPY} = 2.4647 arcseconds}
+    \boxed{\sigma_{Yaw} = 7.5067 arcseconds}
 \end{displaymath}
+\begin{displaymath}\large
+    \boxed{\sigma_{Pitch} = 0.3044 arcseconds}
+\end{displaymath}
+\begin{displaymath}\large
+    \boxed{\sigma_{Roll} = 0.3457 arcseconds}
+\end{displaymath}
+
+
 
 %-------------------------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
 Through modeling, testing, and analysis, the DayStar team has shown that its design of a diurnal star tracker is valid. As a prototype unit on a test flight, DayStar was able to observe and centroid stars in daytime conditions, and provide accurate solutions at the nighttime.
 
-DayStar's main goal at this point is to operate on another test flight within a year's time. Several design shortcomings were identified as the test flight neared. One main design issue was that the power system was contained in a single unit, far from the camera system. The imaging system has stringent power requirements to operate ideally, and the power design currently in place did not meet those requirements. An imaging board, with more power planes, better attention paid to power isolation, and all power regulation done on chip should provide cleaner images. Cleaner images will yield more accurate centroids, and more identifiable stars.
+DayStar's main goal at this point is to operate on another test flight within a year's time. As it was a prototype unit, conceived and built on a short schedule, several design shortcomings were identified as the test flight neared. One main design issue was that the power system was contained in a single unit, far from the camera system. The imaging system has stringent power requirements to operate ideally, and the power design currently in place did not meet those requirements. An imaging board, with more power planes, better attention paid to power isolation, and all power regulation done on chip should provide cleaner images. Cleaner images will yield more accurate centroids, and more identifiable stars.
 
 Another design change would be to add active thermal regulation to key components, specifically, the CMOS image sensor. In flight, the imaging system temperature stayed around 25C. Image noise increases drastically with temperature, and active cooling down to the sensor's optimal temperature range will help provide cleaner images for analysis.
 
-Finally, the CONOPS used for flight needs to be changed. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. In daytime, exposures were such that the high gain images were fully saturated. Only for a few exposure times were stars identifiable using the low gain images. By adjusting exposure times to ensure that the high gain images were correctly exposed for, improved star identification and tracking performance is expected.
+Finally, the CONOPS used for flight needs to be changed. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. Ideally, the images would be exposed for the high gain settings. In daytime, exposures were such that the high gain images were fully saturated. Only for a few exposure times were stars identifiable using the low gain images. By adjusting exposure times to ensure that the high gain images were correctly exposed for, improved star identification and tracking performance is expected.
 
 DayStar expects that with the design and CONOPS changed implemented, future balloon flights would yield better performance in operation and star identification. Both the accuracy in tracking fields, as well as the number of stars observed in daytime and night time conditions will go up, further validating DayStar's capability as a diurnal star tracker.
 
