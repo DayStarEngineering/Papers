@@ -1,7 +1,7 @@
 % ----------------------------------------------- %
 % --- File: IEEE_paper.tex  --------------------- %
 % --- Authors: Nick, Jed, Zach, K-Dink   -------- %
-% --- Due Date: 11:59PM, Monday, October 29th --- %
+% --- Due Date: 11:59PM, Sunday, January 6th ---- %
 % ----------------------------------------------- %
 
 % IEEE Special Document Class
@@ -35,9 +35,9 @@
 \newcommand{\BC}{\mathit{BC}}
 \newcommand{\sub}[1]{\text{#1}} % subscript
 
-% -------------- $
-% -- DOCUMENT -- $
-% -------------- $
+% -------------------------------------------------------------------------- $
+% -------------------------------- DOCUMENT -------------------------------- $
+% -------------------------------------------------------------------------- $
 \begin{document}
 
 \title{DayStar: Modeling and Test Results of a Balloon-Borne Daytime Star Tracker}
@@ -95,9 +95,11 @@ The current standard for balloon-based attitude determination is the University 
 To enable daytime operation and achieve better attitude knowledge, a star tracker needs to be designed with a longer focal length and finer plate scale than the ST5000. Two benefits emerge with these changes: the intensity level of the sky background relative to star flux drops and the centroiding of stars becomes more accurate. DayStar, a balloon-borne diurnal star tracker conceived by students from the University of Colorado, has not only been designed to take advantage of these modifications but has further improved daytime capabilities by using a red-sensitive sensor, long-pass filtering, and superior baffling. This paper will detail the modeling of DayStar's performance, describe key components of the DayStar system, and discuss results from DayStar's September 2012 test flight.
 
 %-------------------------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------------------------
 \section{Modeling}
 The performance of DayStar depends on two factors: image quality and algorithm performance. The two are functionally independent, and must be linked by one or more parameters. The primary link is signal-to-noise ratio, $\SNR$, although the size of stars in the image is also important. The following sections describe how a threshold $\SNR$ and star size are determined by star centroiding algorithms, and how image quality analysis is used to support DayStar's design parameters and predict daytime performance.
 
+%-------------------------------------------------------------------------------------------------------
 \subsection{Algorithm Performance}
 The accuracy to which DayStar can determine its attitude is a function of how many stars it can find at any given time and how well it centroids those stars. Turning a set of star vectors into an attitude measurement is accomplished using Davenport's q-method \cite{qmethod}, which finds a least squares solution for the rotation between two coordinate frames.
 
@@ -132,6 +134,7 @@ From Figure \ref{fig:detectstars}, the daytime design-to exposure range was chos
 \end{figure}
 For DayStar to successfully identify and centroid a star a minimum $\SNR$ of 6.0 was chosen as a design-to specification.
 
+%-------------------------------------------------------------------------------------------------------
 \subsection{Image Quality}
 Given a minimum $\SNR$ and a star blur of 4 to 6 pixels square, the goal of the image modeling is to determine the number of stars visible during night and day. This requires identification of signal and noise sources; we assume that the sky background and stars generate Poisson shot noise, and also consider dark current $\DC$ and read noise $\RN$ from the image sensor. On a star-by-star basis, $\SNR$ is given by Equation \ref{eq:snr}, in which $F$ is the flux from the star or background in photons per second per pixel, $t$ is exposure time in seconds and $n$ is the number of square pixels that totally encompass the star as specified in Figure \ref{fig:detectstars}.
 \begin{equation}
@@ -194,6 +197,7 @@ Three representative starfields are used, bounded by the $0-20^\circ$, $20-40^\c
 
 Every combination of magnitude and temperature is evaluated for $\SNR$. The total flux is also checked against the well depth, and stars that saturate are discarded. For each star with an $\SNR$ greater than 6.0, the fractional number in an average image is summed to find the total number of visible stars. This translates to a total system accuracy via Figure \ref{fig:accuracy}.
 
+%-------------------------------------------------------------------------------------------------------
 \subsection{Performance Analysis}
 The modeling processes defined in the previous sections have two applications. The first is system design; sensitivity plots for system parameters can be created by calculating the number of stars over a range. One example that was used in DayStar's design is shown in Figure \ref{fig:longpass}. In this case, the longpass filter wavelength was chosen to maximize accuracy across all exposure times.
 
@@ -204,6 +208,7 @@ After all of DayStar's parameters had been defined, the modeling was also used t
     \label{fig:numstars}
 \end{figure}
 
+%-------------------------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------------------------
 \section{DayStar Description}
 
@@ -230,6 +235,7 @@ The rest of the DayStar system is comprised of a baffle for the lens, a computer
     \label{fig:power}
 \end{figure}
 
+%-------------------------------------------------------------------------------------------------------
 \subsection{Flight and Concept of Operations}
 On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The launch was conducted in Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 35km altitude and ending around 17:30 mountain standard time.
 \begin{figure}
@@ -242,9 +248,42 @@ On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Po
 Operation was split into three separate modes: daytime, twilight, and nighttime. During daytime and nighttime operation, bursts of images at a rate of 10Hz for durations of 20 and 50 seconds were taken respectively. These bursts were taken with varying gain and exposure times. During twilight operation 5 seconds bursts were taken and the camera settings were changed more rapidly to capture the effect of decreasing background brightness. In total, ~460 GB of images and health and status data were collected.
 
 %-------------------------------------------------------------------------------------------------------
+%-------------------------------------------------------------------------------------------------------
 \section{Test Flight Results}
 
-\subsection{Analysis}
+\subsection{Methodology}
+
+Here we discuss the analysis methods we've been using. 
+
+\subsubsection{Noise Reduction}
+
+Discussion of subtraction and normalization methods. We should show a stock original image (nighttime) and a flatfielded version. Make sure to explain the mean and robust mean methods in detail.
+
+\subsubsection{Star Identification and Matching}
+
+Discussion of Kevin's star finding algorithm. Begin with centroiding methods and an image of a centroided star. Move on the the identification and matching between frames.
+
+\subsubsection{Rotation Between Frames and Accuracy}
+
+Conclude the section by describing how we find quaternions, what they represent, and how we use them to find our rotations and the precision of our estimates.
+
+%-------------------------------------------------------------------------------------------------------
+\subsection{Nighttime Results}
+
+This section details nighttime results. Establish the images we are using: high-gain, what high-gain means (30x?), how many per burst, framerate, etc. Present a composite image of all matched stars along our best sequence. Present plots of the angular motion, both filtered and unfiltered. Report the precision.
+
+%-------------------------------------------------------------------------------------------------------
+\subsection{Daytime Results}
+
+Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused high-gain images to saturate, so only the low-gain images were usable. These images displayed much more column bias than their high-gain counterparts, making daytime analysis more difficult. 
+
+Figure ??? shows a raw image taken during twilight. High levels of column noise are readily apparent. These were removed using the image normalization routine discussed in above. The result is shown in ???.
+
+
+%-------------------------------------------------------------------------------------------------------
+\subsection{Old Material}
+
+\subsubsection{Analysis}
 Before DayStar's test images could be analyzed for accuracy, they first had to be corrected for sensor biases and lens vignetting. This is referred to generically as flat-field correction \cite{flatfield}. 
 
 The sCMOS sensor contains two independent sensor halves. Each half contains columns of pixels read out through different on-chip amplifiers, with both dark and exposed areas. To correct for varying biases in each amplifier, referred to commonly as \emph{fixed pattern noise} \cite{olympusmicro}, every dark column was compared to a composite robust mean of the entire dark area. This yielded a multiplication factor for each column, describing the difference between each column and the overall dark area. When applied, these factors normalize all column amplifiers as if a uniform amplification was applied everywhere. This process is repeated for the top and bottom sensor halves. Then a similar process, where the columns in each half were compared with a robust average of both halves. This normalizes gains between the two halves, and yields a full image, with uniform amplification. Typically, correcting for fixed pattern noise is done by subtracting dark frames from every readout frame. Due to readout speed requirements and camera design, this was not possible for the DayStar team. In addition, this process must be repeated for each image. CMOS temperature sensitivity and electrical fluctuations in the design cause gain factors to change, even over short image bursts. 
@@ -290,7 +329,7 @@ With the stars identified in each frame identified, the next step was to correla
 
 The number of stars matched between frames is lower than the number of stars detected. This makes sense because the false noise stars or fainter stars identified periodically are not correlated between frames. With star locations correlated between images, the next step was to calculate 3D projections of the optical frame and determine a quaternion rotation between frames.   
 
-\subsection{Tracking Performance}
+\subsubsection{Tracking Performance}
 Before tracking algorithms can be run, DayStar's 2D centroids must be transformed into 3D vectors pointing from the DayStar sensor, down the optical boresight, to each star center. This transformation is computed by:
 \begin{equation}
     \vec{R}_{star} = \frac{1}{\sqrt{f^2 + \Delta{x^2} + \Delta{y^2}}} \arrayb{c}{\Delta{x} \\ \Delta{y} \\ f}
@@ -328,6 +367,7 @@ It is apparent that low frequency oscillations are removed by the filtering proc
     \boxed{\sigma_{RPY} = 2.4647 arcseconds}
 \end{displaymath}
 
+%-------------------------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
 Through modeling, testing, and analysis, the DayStar team has shown that its design of a diurnal star tracker is valid. As a prototype unit on a test flight, DayStar was able to observe and centroid stars in daytime conditions, and provide accurate solutions at the nighttime.
