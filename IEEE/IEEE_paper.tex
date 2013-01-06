@@ -78,7 +78,7 @@
 
     DayStar is a star tracker designed under the University of Colorado Aerospace Capstone Program with support from Southwest Research Institute. It is intended to improve upon the pointing accuracy and daytime performance of the ST5000, a star tracker commonly used in NASA’s sounding rocket program. The ST5000 was shown to work on a balloon at night, but failed to acquire stars during daytime. DayStar remedies this issue by filtering light below 620 nm and by using a CMOS sensor with high red-performance and resolution. This attenuates most of the sky background, which, combined with custom star identification algorithms, allows stars be seen during the day.
 
-    To validate modeling and demonstrate daytime star acquisition, a DayStar prototype flew on a high altitude balloon in September, 2012. The filtered camera typically saw four or more stars during daytime, proving the ability to operate diurnally. Additional analysis evaluates DayStar’s ability to centroid stars, match stars between frames, and use a series of images to track its attitude. This links the precision of star centroiding algorithms with the pointing acuity for both day and night conditions. These findings will be used to validate the performance model and examine DayStar as a potential star tracker for high altitude balloon observatories.
+    To validate modeling and demonstrate daytime star acquisition, a DayStar prototype flew on a high altitude balloon in September, 2012. The filtered camera typically saw three stars during daytime, proving the ability to operate diurnally. Additional analysis evaluates DayStar’s ability to centroid stars, match stars between frames, and use a series of images to track its attitude. This links the precision of star centroiding algorithms with the pointing acuity for both day and night conditions. These findings will be used to validate the performance model and examine DayStar as a potential star tracker for high altitude balloon observatories.
 \end{abstract}
 
 \tableofcontents
@@ -88,7 +88,7 @@
 NASA's Scientific Balloon Program flies large payloads (up to 8000 lb) each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at $120,000$ ft, above $99.5\%$ of the Earth's atmosphere \cite{young2012}. This is especially advantageous for telescopic observing, providing conditions almost entirely devoid of image degradation due to atmospheric turbulence. The development of a balloon platform that can image in visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu$m due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of
 the year \cite{young2012}.
 
-The potential for stratospheric 1-m and 2-m telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of this project is to improve tracking (attitude determination) on balloon platforms to levels capable of supporting these systems.
+The potential for stratospheric 1 meter and 2 meter telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of the DayStar project is to improve tracking (attitude determination) on balloon platforms to levels capable of supporting these systems.
 
 The current standard for balloon-based attitude determination is the University of Wisconsin's Star Tracker 5000 (ST5000). With roots in NASA's sounding rocket program, this instrument was test flown on a balloon on May 6, 2011 and performed at $0.24''$ and $0.53''$ ($1\sigma$) pitch and yaw accuracies during nighttime. Unfortunately, the ST5000 saturated 30 minutes before sunrise and was unable to provide an attitude signal during the day \cite{young2012}. The diffraction limit of a 1-m telescope is $0.125''$ at $5000 \AA{}$. In order to have attitude control at this level, an error signal must be provided that is at least as accurate. While the ST5000 is close, it is still a factor of 5 too coarse to be the sole optical reference \cite{young2012}.
 
@@ -201,11 +201,11 @@ Every combination of magnitude and temperature is evaluated for $\SNR$. The tota
 \subsection{Performance Analysis}
 The modeling processes defined in the previous sections have two applications. The first is system design; sensitivity plots for system parameters can be created by calculating the number of stars over a range. One example that was used in DayStar's design is shown in Figure \ref{fig:longpass}. In this case, the longpass filter wavelength was chosen to maximize accuracy across all exposure times.
 
-After all of DayStar's parameters had been defined, the modeling was also used to estimate performance during both day and night. In Figure \ref{fig:numstars}, this is broken down by visual magnitude and totaled in the final column. The three daytime estimates correspond to different methods of interpreting tabulated data for star temperature. The nominal method is a linear interpolation between discrete temperatures, while the worst and best cases are bound assuming stepwise functions. The results show that DayStar should be able to see stars in both daytime and nighttime in quantities that satisfy accuracy requirements.
+After all of DayStar's parameters had been defined, the modeling was also used to estimate performance during both day and night. In Figure \ref{fig:numstars_nick}, this is broken down by visual magnitude and totaled in the final column. The three daytime estimates correspond to different methods of interpreting tabulated data for star temperature. The nominal method is a linear interpolation between discrete temperatures, while the worst and best cases are bound assuming stepwise functions. The results show that DayStar should be able to see stars in both daytime and nighttime in quantities that satisfy accuracy requirements.
 \begin{figure}
     \includegraphics[width = 3.3in]{\rootdir numstars.jpg}
     \caption{The total number of stars for the worst case galactic latitude satisfies nighttime and daytime requirements.}
-    \label{fig:numstars}
+    \label{fig:numstars_nick}
 \end{figure}
 
 %-------------------------------------------------------------------------------------------------------
@@ -292,7 +292,7 @@ After identifying the stars in each image and calculating a refined centroid for
 \end{figure}
 
 It is also clear that star identification picked up false stars; this is seen in the column noise on the left hand side of Figure \ref{fig:starpaths}. The circled stars that did not streak as a function of frames may also be false noise stars or stars that were faint enough to only be detectable in a small number of frames. The number of stars detected is expected to stay near constant in one of these bursts because the WASP gondola was under pointing control to within one degree and DayStar has an 8.3 degree field of view. Figure \ref{fig:numstars} shows the number of stars detected in a 500 image burst.
-\begin{figure}
+\begin{figure}[H]
     \centering
     \includegraphics[width = 3.3in]{\rootdir numstars.png}
     \caption{Number of stars detected over a 500 image burst during nightime operation.}
@@ -374,44 +374,47 @@ The standard deviation of the of the yaw, pitch, and roll is:
 %-------------------------------------------------------------------------------------------------------
 \subsection{Daytime Results}
 
-Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused high-gain images to saturate, so only the low-gain images were usable. These images displayed much more column bias than their high-gain counterparts, making daytime analysis more difficult. 
+Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused the high-gain images to saturate, so only the low-gain images were usable. These images displayed much more column bias than their high-gain counterparts, degrading the signal-to-noise of stars in the daytime images. 
 \begin{figure}[H]
     \centering
-    \includegraphics[width=3.3in]{\rootdir day_raw.png}
+    \includegraphics[width=3.6in]{\rootdir day_raw.png}
     \caption{A raw image taken at ??? during the day. The influence of daytime scattering is evident, and no stars are readily visible.}
     \label{fig:day_raw}
 \end{figure}
 
-Figure \ref{fig:day_raw} shows a raw image taken during twilight. High levels of column noise are readily apparent. These were removed using the image normalization routine discussed in above. The result is shown in Figure \ref{fig:day_processed}. This processed image has had the background subtracted and is multiplied by three.
+Figure \ref{fig:day_raw} shows a raw image taken during daytime. High levels of column noise are readily apparent. These were removed using the image normalization routine discussed above. The result is shown in Figure \ref{fig:day_processed}. This processed image has had the background subtracted, and three stars are identifiable and circled in red.
 \begin{figure}[H]
     \centering
-    \includegraphics[width=3.3in]{\rootdir day_processed.png}
+    \includegraphics[width=3.6in]{\rootdir day_processed.png}
     \caption{When the same image is processed with flat-fielding and background subtraction, three stars become visible.}
     \label{fig:day_processed}
 \end{figure}
 
-Figure \ref{fig:day_zoom} shows one of the stars seen in the daytime image. The fact that DayStar was able to see this in high ambient light conditions proves the feasibility of a daytime star tracker. However, there are only three stars; this is not enough to provide accurate tracking knowledge. Future revisions of DayStar must remove more systematic noise and aberrations before daytime tracking can be provided with the same precision as nighttime tracking.
+Figure \ref{fig:day_zoom} shows one of the stars seen in the processed daytime image. While residual column noise is still evident, the shape of the star and its high peak value make it identifiable. For this burst of images, the three stars remain visible in most frames. However, some frames only yield two of the stars due to increased noise, which makes consistent matching impossible. 
+
 \begin{figure}[H]
     \centering
-    \includegraphics[width=3.3in]{\rootdir day_zoom.png}
+    \includegraphics[width=3.6in]{\rootdir day_zoom.png}
     \caption{A zoomed view shows what daytime stars look like, once noise and sky brightness are removed.}
     \label{fig:day_zoom}
 \end{figure}
+
+The fact that DayStar was able to see stars in high ambient light conditions proves the feasibility of a daytime star tracker. However, there are only three stars; this is not enough to provide accurate tracking knowledge. Future revisions of DayStar must remove more systematic noise and aberrations before daytime tracking can be provided with the same precision as nighttime tracking.
 
 
 %-------------------------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------------------------
 %-------------------------------------------------------------------------------------------------------
 \section{Conclusions}
-Through modeling, testing, and analysis, the DayStar team has shown that its design of a diurnal star tracker is valid. As a prototype unit on a test flight, DayStar was able to observe and centroid stars in daytime conditions, and provide accurate solutions at the nighttime.
+Through modeling, testing, and analysis, the DayStar team has shown that its design of a diurnal star tracker is valid. As a prototype unit on a test flight, DayStar was able to observe and centroid stars in daytime conditions, and provide accurate solutions during nighttime.
 
-DayStar's main goal at this point is to operate on another test flight within a year's time. As it was a prototype unit, conceived and built on a short schedule, several design shortcomings were identified as the test flight neared. One main design issue was that the power system was contained in a single unit, far from the camera system. The imaging system has stringent power requirements to operate ideally, and the power design currently in place did not meet those requirements. An imaging board, with more power planes, better attention paid to power isolation, and all power regulation done on chip should provide cleaner images. Cleaner images will yield more accurate centroids, and more identifiable stars.
+DayStar's main goal at this point is to operate on another test flight within a year's time. As it was a prototype unit, conceived and built on a short schedule, several design shortcomings were identified for this flight. One main design issue was that the power system was contained in a single unit, far from the camera. The imaging system has stringent power requirements to operate ideally, and the power subsystem did not meet those requirements. An imaging board with more power planes, better attention paid to power isolation, and all power regulation done on chip will provide cleaner images. These in turn will yield more accurate centroids, and more identifiable stars during daytime.
 
-Another design change would be to add active thermal regulation to key components, specifically, the CMOS image sensor. In flight, the imaging system temperature stayed around 25C. Image noise increases drastically with temperature, and active cooling down to the sensor's optimal temperature range will help provide cleaner images for analysis.
+Another design change would be to add active thermal regulation to key components, specifically the CMOS image sensor. In flight, the imaging system temperature stayed around 25 degrees Celsius. Image noise increases with temperature, and active cooling down to the sensor's optimal temperature range will help provide cleaner images for analysis.
 
-Finally, the CONOPS used for flight needs to be changed. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. Ideally, the images would be exposed for the high gain settings. In daytime, exposures were such that the high gain images were fully saturated. Only for a few exposure times were stars identifiable using the low gain images. By adjusting exposure times to ensure that the high gain images were correctly exposed for, improved star identification and tracking performance is expected.
+Finally, the operation plan used for flight requires modifications. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. Ideally, the images would be exposed for the high gain settings. In daytime, exposures were such that the high gain images were fully saturated. Only for a few exposure times were stars identifiable using the low gain images. By adjusting exposure times to ensure that the high gain images are correctly exposed for, improved star identification and tracking performance is expected.
 
-DayStar expects that with the design and CONOPS changed implemented, future balloon flights would yield better performance in operation and star identification. Both the accuracy in tracking fields, as well as the number of stars observed in daytime and night time conditions will go up, further validating DayStar's capability as a diurnal star tracker.
+DayStar expects that with the design and operations changes implemented, future balloon flights will yield better performance in operation and star identification. Both the accuracy in tracking fields and the number of stars observed in daytime and nighttime conditions will go up, further validating DayStar's capability as a diurnal star tracker.
 
 %-------------------------------------------------------------------------------------------------------
 \bibliographystyle{IEEEtran}
@@ -441,6 +444,6 @@ Eliot F. Young received an A.B .in Physics from Amherst College in 1984, an S.M.
 \end{biographywithpic}
 
 \acknowledgments
-The authors would like to thank those from the Wallops Arc Second Pointer team and the Columbia Scientific Balloon Facility for their help in flying DayStar. Thanks also go to Dr. Kim Ennico, Dr. Scott Palo and Trudy Schwartz for their assistance and resources throughout the design process.
+The authors would like to thank those from the Wallops Arc Second Pointer team and the Columbia Scientific Balloon Facility for their help in flying DayStar. Thanks also to Dr. Kim Ennico, Dr. Scott Palo and Trudy Schwartz for their assistance and resources throughout the design process.
 
 \end{document}
