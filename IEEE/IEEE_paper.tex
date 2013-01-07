@@ -373,11 +373,12 @@ The standard deviation of the yaw was as low as ~2 arcseconds during some portio
 %-------------------------------------------------------------------------------------------------------
 \subsection{Daytime Results}
 
-Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused the high-gain images to saturate, so only the low-gain images were usable. These images display much more column bias than their high-gain counterparts, degrading the signal-to-noise of stars in the daytime images.
+Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused the high-gain images to saturate, so only the low-gain images were usable. These images displayed much more column bias than their high-gain counterparts, degrading the signal-to-noise of stars in the daytime images. In addition, since the imaging system on DayStar had no cooling, the image sensor operated at around 10C. The sensor is very sensitive to temperature changes, and operates best at -40C. A 10 degree increase in sensor temperature typically equates to doubling the dark current and hot pixels in each image \cite{AndorTemp}.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=3.6in]{\rootdir day_raw.png}
-    \caption{A raw image taken at ??? during the day. The influence of daytime scattering is evident, and no stars are readily visible.}
+    \caption{A raw image taken at 17:12 during the day. The influence of daytime scattering is evident, and no stars are readily visible.}
     \label{fig:day_raw}
 \end{figure}
 
@@ -409,7 +410,7 @@ Through modeling, testing, and analysis, the DayStar team has shown that its des
 
 DayStar's main goal at this point is to operate on another test flight within a year's time. As it was a prototype unit, conceived and built on a short schedule, several design shortcomings were identified for this flight. One main design issue was that the power system was contained in a single unit, far from the camera. The imaging system has stringent power requirements to operate ideally, and the power subsystem did not meet those requirements. An imaging board with more power planes, better attention paid to power isolation, and all power regulation done on chip will provide cleaner images. These in turn will yield more accurate centroids, and more identifiable stars during daytime.
 
-Another design change would be to add active thermal regulation to key components, specifically the CMOS image sensor. In flight, the imaging system temperature stayed around 25 degrees Celsius. Image noise increases with temperature, and active cooling down to the sensor's optimal temperature range will help provide cleaner images for analysis.
+Another design change would be to add active thermal regulation to key components, specifically the CMOS image sensor. In flight, the imaging system temperature stayed around 10 degrees Celsius, which is 50 degrees above the intended operating temperature. Dark currents and hot pixels increase with temperature, and active cooling down to the sensor's optimal temperature range will help provide cleaner images for analysis.
 
 Finally, the operation plan used for flight requires modifications. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. Ideally, the images would be exposed for the high gain settings. In daytime, exposures were such that the high gain images were fully saturated. Only for a few exposure times were stars identifiable using the low gain images. By adjusting exposure times to ensure that the high gain images are correctly exposed for, improved star identification and tracking performance is expected.
 
