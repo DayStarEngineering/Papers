@@ -256,7 +256,7 @@ Operation was split into three separate modes: daytime, twilight, and nighttime.
 
 All data obtained from the test flight came in the form of self-measured diagnostics, tied to bursts of raw images. DayStar operated at 10Hz for all burst configurations. Individual bursts are analyzed for tracking performance. The general approach is to first correct each raw image for sensor biases. Next, stars are correlated between frames, and their changes in location are translated into three dimensional space. These changes are quantified, and analyzed to provide a measure of tracking performance. This process is the same for all burst configurations and modes of operation.
 
-The image sensor on DayStar is able to simultaneously output two separate images. Each is the result of different gain settings within the sensor and are referred to as high-gain and low-gain images. The intension is for the user to combine the two images to obtain a final image with increased dynamic range. This was not in the scope of DayStar's test flight. For all analysis, just the high-gain images were used. They contain less read noise and produced flatter, more consistent results throughout the flight.
+The image sensor on DayStar is able to simultaneously output two separate images. Each is the result of different gain settings within the sensor and are referred to as high-gain and low-gain images. The intention is for the user to combine the two images to obtain a final image with increased dynamic range. This was not in the scope of DayStar's test flight. For all analysis, just the high-gain images were used. They contain less read noise and produced flatter, more consistent results throughout the flight.
 
 
 \subsubsection{Image Correction}
@@ -264,7 +264,7 @@ The image sensor on DayStar is able to simultaneously output two separate images
 Before DayStar's test images could be analyzed for accuracy, they first had to be corrected for sensor biases. This is referred to generically as flat-field correction \cite{flatfield}.
 
 The sCMOS sensor contains two independent sensor halves. Each half contains columns of pixels read out through different on-chip amplifiers, with both dark and exposed areas. To correct for varying biases in each amplifier, referred to commonly as \emph{fixed pattern noise} \cite{olympusmicro}, every dark column was compared to a composite robust mean of the entire dark area. This yielded a multiplication factor for each column, describing the difference between each column and the overall dark area. When applied, these factors act to normalize all column amplifiers as if a uniform amplification was applied everywhere. This process is repeated for the top and bottom sensor halves. Then a similar process, where the columns in each half were compared with a robust average of both halves. This normalizes gains between the two halves, and yields a full image, with uniform amplification. Typically, correcting for fixed pattern noise is done by subtracting dark frames from every readout frame. Due to readout speed
-requirements and camera design, this was not possible for the DayStar team. In addition, this process must be repeated for each image. CMOS temperature sensitivity and electrical fluctuations in the system cause gain factors to change, even over short image bursts.
+requirements and camera design, this was not possible for the DayStar team. CMOS temperature sensitivity and electrical fluctuations in the system cause gain factors to change, even over short image bursts.
 
 \begin{figure}
     \centering
@@ -277,7 +277,7 @@ Figure \ref{fig:FlatField} shows an original and flat-fielded image processed fr
 
 \subsubsection{Star Identification and Matching}
 
-The analysis of DayStar's test flight data began by finding stars in the images collected. Stars were located in images by first estimating the image background using a robust median. Pixels and groups of pixels that surpassed this background median by a threshold were identified as potential stars. Once a potential star was identified, a region of interest in the image around a potential star was defined. The column bias inherent in CMOS images was subtracted from the columns in the region of interest by subtracting the robust median (to 2 sigma) of each column from that column. If the potential star was large enough to be considered a star rather than noise, a more precise centroid for that star was computed using an intensity weighted center of gravity centroiding algorithm. A comparison of the three algorithms explored for this refined centroiding can be seen in Figure \ref{fig:centroidmethods}.
+The analysis of DayStar's test flight data began by finding stars in the images collected. Stars were located in images by first estimating the image background using a robust median. Pixels and groups of pixels that surpassed this background median by a threshold were identified as potential stars. Once a potential star was identified, a region of interest in the image around a potential star was defined. The column bias inherent in CMOS images was subtracted from the columns in the region of interest by subtracting the robust median (to $2\sigma$) of each column from that column. If the potential star was large enough to be considered a star rather than noise, a more precise centroid for that star was computed using an intensity weighted center of gravity centroiding algorithm. A comparison of the three algorithms explored for this refined centroiding can be seen in Figure \ref{fig:centroidmethods}.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 3.3in]{\rootdir centroidmethods.png}
@@ -289,11 +289,11 @@ After identifying the stars in each image and calculating a refined centroid for
 \begin{figure}[H]
     \centering
     \includegraphics[width = 3.3in]{\rootdir starpaths.png}
-    \caption{Star positions over a 500 image burst during nightime operation.}
+    \caption{Star positions over a 500 image burst (50 s) during nightime operation.}
     \label{fig:starpaths}
 \end{figure}
 
-It is also clear that the star identification picked up false stars; this is seen in the column noise on the left hand side of Figure \ref{fig:starpaths}. The circled stars that did not streak as a function of frames may also be false noise stars or stars that were faint enough to only be detectable in a small number of frames. The number of stars detected is expected to stay near constant in one of these bursts because the WASP gondola was under pointing control to within one degree and DayStar has an 8.3 degree field of view. Figure \ref{fig:numstars} shows the number of stars detected in a 500 image burst.
+It is also clear that the star identification picked up false stars; this is seen in the column noise on the left hand side of Figure \ref{fig:starpaths}. The circled stars that did not streak as a function of frames may also be false noise stars or stars that were faint enough to only be detectable in a small number of frames. The number of stars detected is expected to stay near constant in one of these bursts because the WASP gondola was under pointing control to within one degree in azimuth and DayStar has an 8.3 degree field of view. Figure \ref{fig:numstars} shows the number of stars detected in a 500 image burst.
 \begin{figure}[H]
     \centering
     \includegraphics[width = 3.3in]{\rootdir numstars.png}
@@ -326,11 +326,11 @@ Before tracking algorithms can be run, DayStar's 2D centroids must be transforme
 \end{equation}
 where $\Delta{x}$ and $\Delta{y}$ are the pixel offsets of the star centroid from the image origin, and $f$ is the focal length of DayStar's optics. A set of 3D unit vectors is generated for each star in every one of DayStar's images.
 
-The matching star vectors between frames can be used to find the attitude rotation between each frame using the q-method. After this is done for an entire image burst, DayStar's attitude can be mapped over time relative to the attitude of the first image.
+The matching star vectors between frames can be used to find the attitude rotation between each frame using the q-method \cite{qmethod}. After this is done for an entire image burst, DayStar's attitude can be mapped over time relative to the attitude of the first image.
 
-Even though DayStar's inertial attitude is unknown, the variability of relative attitude changes describes DayStar's tracking precision. However, this assumes that the WASP platform was totally stationary during the entirety of the burst. Because we know this is not true, we assume that the motion of the WASP gondola can mostly be characterized by low frequency modes, and that DayStar's attitude variability is at a much higher frequency. To isolate the two effects filtering was performed in the frequency domain. For the first step in filtering, quaternion rotations were converted into the following Euler angles: yaw, pitch, and roll.
+Even though DayStar's inertial attitude is unknown, the variability of relative attitude changes describes DayStar's tracking precision. However, this assumes that the WASP platform was totally stationary during the entirety of the burst. Because we know this is not true, we assume that the motion of the WASP gondola can mostly be characterized by low frequency modes, and that DayStar's attitude variability is at a much higher frequency. To isolate the two effects filtering was performed in the frequency domain. For the first step in filtering, quaternion rotations were converted to the following Euler angle sequence: yaw, pitch, roll.
 
-The angles were then transformed into the frequency domain, using Fast Fourier transforms. A high-pass filter was then applied to remove frequencies lower than 1.5 Hz. Transforming back into the time domain, the roll, pitch, and yaw vectors now represent the changes in an attitude solution, minus the slow movement of the balloon gondola itself.\pagebreak
+The angles were then transformed into the frequency domain, using Fast Fourier transforms. A high-pass elliptical filter was applied to remove frequencies lower than 3.5 Hz. Transforming back into the time domain, the yaw, pitch, and roll angles now represent the changes in an attitude solution minus the slow movement of the balloon gondola itself.\pagebreak
 
 
 %-------------------------------------------------------------------------------------------------------
@@ -346,7 +346,7 @@ The angles were then transformed into the frequency domain, using Fast Fourier t
 
 \twocolumn
 \subsection{Nighttime Results}
-Figure \ref{fig:Filtering} shows plots illustrating the filtering process for each Euler angle in a yaw-pitch-roll sequence for a set of 500 nighttime images taken over 50 seconds. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
+Figure \ref{fig:Filtering} shows plots illustrating the filtering process for each Euler angle in a yaw-pitch-roll sequence for a set of 500 nighttime images taken over 50 seconds. Time-domain signals are on the leftmost subplots, and frequency-domain power plots are on the rightmost subplots, with raw signals on top and filtered signals on the bottom.
 
 The motion of the balloon gondola is clearly visible in the yaw, pitch, and roll plots. Throughout the 50 second burst, the gondola appears to have undergone 3 cycles mainly consisting of yaw. From the power spectrum plots, it is apparent that majority of the low frequency motion is found below 2 Hz. Assuming that this motion is primarily due to the dynamics of the balloon and gondola, an elliptical high-pass filter is implemented at 3.5 Hz to isolate the high frequency oscillations. Motion above 3.5 Hz is assumed to represent the performance of the DayStar system and its algorithms alone.
 
@@ -367,7 +367,7 @@ These results can be misleading because the standard deviation of the pitch, rol
     \label{fig:RollingSTD}
 \end{figure}
 
-The standard deviation of the yaw was as low as ~2 arcseconds during some portions of this dataset. Periods of worst performance occur when the gondola changes direction most drastically. This coarse yaw control was provided by a 1 degree yaw corrector on the balloon flight string. It is possible that high frequency noise from this motor caused apparent inflation of the yaw, pitch, and roll performance while applying azimuthal corrections to the gondola.
+The standard deviation of the yaw was as low as ~2 arcseconds during some portions of this dataset. Periods of worst performance occur when the gondola changes direction most drastically. This coarse yaw control was provided by a 1 degree yaw corrector on the balloon flight string. It is possible that high frequency noise from this motor caused apparent inflation of the yaw, pitch, and roll performance while applying azimuthal corrections to the gondola. This would make false the assumption that all high frequency data solely represents DayStar's performance.
 
 %-------------------------------------------------------------------------------------------------------
 \subsection{Daytime Results}
