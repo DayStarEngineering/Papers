@@ -85,7 +85,7 @@
 
 %-------------------------------------------------------------------------------------------------------
 \section{Introduction}
-NASA's Scientific Balloon Program flies large payloads (up to 8000 lb) each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at $120,000$ ft, above $99.5\%$ of the Earth's atmosphere \cite{young2012}. This is especially advantageous for telescopic observing, providing conditions almost entirely devoid of image degradation due to atmospheric turbulence. The development of a balloon platform that can image in visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu$m due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of
+NASA's Scientific Balloon Program flies large payloads (up to 8000 lb) each and every year. These missions can last anywhere from a few hours to several weeks, and offer scientific research at altitudes upwards of $120,000$ ft, above $99.5\%$ of the Earth's distorting atmosphere \cite{young2012}. This is especially advantageous for telescopic observing, providing conditions almost entirely devoid of image degradation due to atmospheric turbulence. The development of a balloon platform that can image in visible wavelengths with $0.1''$ resolution is of widespread importance. Ground-based system such as Subaru often look only in infrared wavelengths longer than $1 \mu$m due to the unacceptable quality of visible images. Short of expensive orbital telescopes such as the Hubble Space Telescope (HST), balloon-borne systems are the only way to achieve diffraction limited performance in the visible regime. An inexpensive, 1-m telescope in the stratosphere will rival the performance of HST and outperform every ground-based telescope every night of
 the year \cite{young2012}.
 
 The potential for stratospheric 1 meter and 2 meter telescopes to operate at their diffraction limits can only be realized with pointing and tracking systems of comparable performance. The goal of the DayStar project is to improve tracking (attitude determination) on balloon platforms to levels capable of supporting these systems.
@@ -221,14 +221,15 @@ As stated in the introduction, DayStar's goal is to see stars during the daytime
 \end{figure}
 In addition to its red performance, the other advantages of the sCMOS sensor include its very low read noise and dark current, as well as a high pixel count (5.5 megapixels). The noise characteristics are less important for daytime, since background scattering dominates performance. However, at night, the lack of noise helps yield very crisp, high quality images. It should be noted that for this test flight, DayStar had power issues that generated excess read noise, resulting in grainy nighttime photos. Future improvements to the power system will be necessary to optimize performance.
 
-The other advantage of the camera is that it contains many pixels, which helps spread out background light during daytime. The size of the pixels, 6.5$\mu$m, is also advantageous; combined with a long focal length, small pixels improve plate scale, which measures the number of arcseconds subtended by each pixel. The optical system for the test flight was an Olympus lens with a 150mm focal length. Modeling in the previous section takes into account these values in predicting system accuracy.
+The other advantage of the camera is that it contains many pixels, which helps spread out background light during daytime. The size of the pixels, 6.5$\mu$m, is also advantageous; combined with a long focal length, small pixels improve plate scale, which measures the number of arcseconds subtended by each pixel. The optical system for the test flight was an Olympus lens with a 150mm focal length.
+
 \begin{figure}[H]
     \centering
     \includegraphics[width=3 in]{\rootdir olympus.jpg}
     \caption{An Olympus 150mm, f2.0 camera lens was used for DayStar's test flight \protect\cite{olympus}.}
     \label{fig:olympus}
 \end{figure}
-The rest of the DayStar system is comprised of a baffle for the lens, a computer and a PCB for power distribution. The computer is a standard off-the-shelf motherboard with an Intel i3 processor. It consumes about 40W at 3.3V, 5V and 12V, which is all supplied by the power board, seen in Figure \ref{fig:power}. The power board also supports the camera, which requires seven power lines between -0.4V and 3.3V. In the flight configuration, all power is converted from a 15V lithium sulfur-dioxide battery, though DayStar may also run off a benchtop supply.
+The rest of the DayStar system is comprised of an exterior light baffle, a computer, and a PCB for power distribution. The computer is a standard off-the-shelf motherboard with an Intel i3 processor. It consumes about 40W at 3.3V, 5V and 12V, which is all supplied by the power board, seen in Figure \ref{fig:power}. The power board also supports the camera, which requires seven power lines between -0.4V and 3.3V. In the flight configuration, all power is converted from a 15V lithium sulfur-dioxide battery, though DayStar may also run off a benchtop supply.
 \begin{figure}[H]
     \includegraphics[width=3.3in]{\rootdir eps.jpg}
     \caption{The power board converts voltages for the entire payload.}
@@ -237,7 +238,7 @@ The rest of the DayStar system is comprised of a baffle for the lens, a computer
 
 %-------------------------------------------------------------------------------------------------------
 \subsection{Flight and Concept of Operations}
-On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. The launch was conducted in Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 35km altitude and ending around 17:30 mountain standard time.
+On September 22nd, 2012 the DayStar system flew aboard the Wallops Arc Second Pointer (WASP) platform as a secondary payload, as shown in Figure \ref{fig:flight}. DayStar was mounted on the aft of the WASP platform such that when the WASP payload was under pointing control, DayStar was pointed near perpendicular to the sun and its field of view was centered 45 degrees above horizontal. DayStar's azimuth was controlled to an accuracy of 1 degree by a coarse flight train correcting motor. The launch was conducted in Fort Sumner, NM as part of the CSBF 2012 campaign. The entire flight lasted about 15 hours starting at 8:30 am. DayStar actively operated for 5.5 hours, beginning operation 2.5 hours before astronomical sunset at 35km altitude and ending around 17:30 mountain standard time.
 \begin{figure}
     \centering
     \includegraphics[width = 3.3in]{\rootdir daystar_flight.jpg}
@@ -339,41 +340,39 @@ The angles were then transformed into the frequency domain, using Fast Fourier t
     \includegraphics[height=3.1in]{\rootdir YawTracking.png}
     \includegraphics[height=3.1in]{\rootdir PitchTracking.png}
     \includegraphics[height=3.1in]{\rootdir RollTracking.png}
-    \caption{Yaw, pitch, and roll signal and filtering using FFT.}
+    \caption{The yaw, pitch, and roll error signals are isolated using an FFT and a high-pass elliptical filter at 3.5 Hz.}
     \label{fig:Filtering}
 \end{figure*}
 
 \twocolumn
 \subsection{Nighttime Results}
-Figure \ref{fig:Filtering} shows plots illustrating the filtering process for each Euler angle for a batch of nighttime images. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
+Figure \ref{fig:Filtering} shows plots illustrating the filtering process for each Euler angle in a yaw-pitch-roll sequence for a set of 500 nighttime images taken over 50 seconds. Time-domain signals are on the leftmost subplots, and frequency-domain power spectrum plots are on the rightmost subplots, with original signals on top and filtered signals on the bottom.
 
-It is apparent that majority of the low frequency motion is found below 2 hz. Assuming that this motion is primarily due to the dynamics of the balloon and payload, an elliptical highpass filter is implemented at 3.5 hz to isolate the high frequency oscillations. Motion above 3.5 Hz is assumed to represent the performance of the DayStar system and its algorithms alone.
-
-The motion of the balloon gondola is clearly visible in the yaw, pitch, and roll plots. Throughout the 50 second burst, the gondola appears to have undergone 3 cycles mainly consisting of yaw.
+The motion of the balloon gondola is clearly visible in the yaw, pitch, and roll plots. Throughout the 50 second burst, the gondola appears to have undergone 3 cycles mainly consisting of yaw. From the power spectrum plots, it is apparent that majority of the low frequency motion is found below 2 Hz. Assuming that this motion is primarily due to the dynamics of the balloon and gondola, an elliptical high-pass filter is implemented at 3.5 Hz to isolate the high frequency oscillations. Motion above 3.5 Hz is assumed to represent the performance of the DayStar system and its algorithms alone.
 
 The standard deviation of the of the filtered yaw, pitch, and roll for this 500 image burst is:
 
 \begin{align*}
-    \sigma_{Yaw} = 7.825 \ arcseconds \\
-    \sigma_{Pitch} = 0.319 \ arcseconds \\
-    \sigma_{Roll} = 0.361 \ arcseconds
+    \sigma_{Yaw} = 5.506 \ arcseconds \\
+    \sigma_{Pitch} = 0.225 \ arcseconds \\
+    \sigma_{Roll} = 0.262 \ arcseconds
 \end{align*}
 
-These results can be misleading because the standard deviation of the pitch, roll, and yaw varied over time. A plot of the filtered results and a 10 datapoint rolling $3\sigma$ standard deviation is shown in Figure \ref{fig:RollingSTD}.
+These results can be misleading because the standard deviation of the pitch, roll, and yaw vary over time. A plot of the filtered results enveloped by a 10-datapoint rolling $3\sigma$ standard deviation is shown in Figure \ref{fig:RollingSTD}.
 
 \begin{figure}[H]
     \centering
     \includegraphics[width=3.5in]{\rootdir YawMotion.png}
-    \caption{Average yaw standard deviation varies over time.}
+    \caption{The average yaw standard deviation varies over time.}
     \label{fig:RollingSTD}
 \end{figure}
 
-The standard deviation of the yaw was as low as ~2 arcseconds during some portions of this burst. Periods of worst performance occur when the gondola changes direction most drastically. This coarse yaw control was provided by a 1 degree yaw corrector on the balloon flight string. It is possible that high frequency noise from this motor is the reason for inflation of the standard deviation of the yaw, pitch, and roll over time.
+The standard deviation of the yaw was as low as ~2 arcseconds during some portions of this dataset. Periods of worst performance occur when the gondola changes direction most drastically. This coarse yaw control was provided by a 1 degree yaw corrector on the balloon flight string. It is possible that high frequency noise from this motor caused apparent inflation of the yaw, pitch, and roll performance while applying azimuthal corrections to the gondola.
 
 %-------------------------------------------------------------------------------------------------------
 \subsection{Daytime Results}
 
-Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused the high-gain images to saturate, so only the low-gain images were usable. These images displayed much more column bias than their high-gain counterparts, degrading the signal-to-noise of stars in the daytime images. In addition, since the imaging system on DayStar had no cooling, the image sensor operated at around 10C. The sensor is very sensitive to temperature changes, and operates best at -40C. A 10 degree increase in sensor temperature typically equates to doubling the dark current and hot pixels in each image \cite{AndorTemp}.
+Unlike the nighttime images, daytime images were heavily affected by high sky background levels. This caused the high-gain images to saturate, so only the low-gain images were usable. These images display much more column bias than their high-gain counterparts, degrading the signal-to-noise of stars in the daytime images. In addition, since the imaging system on DayStar had no cooling, the image sensor operated at around 10C during the daytime. The sensor is very sensitive to temperature changes, and operates best at -40C. A 10 degree increase in sensor temperature typically equates to doubling the dark current and hot pixels in each image \cite{AndorTemp}.
 
 \begin{figure}[H]
     \centering
@@ -408,13 +407,13 @@ The fact that DayStar was able to see stars in high ambient light conditions pro
 \section{Conclusions}
 Through modeling, testing, and analysis, the DayStar team has shown that its design of a diurnal star tracker is valid. As a prototype unit on a test flight, DayStar was able to observe and centroid stars in daytime conditions, and provide accurate solutions during nighttime.
 
-DayStar's main goal at this point is to operate on another test flight within a year's time. As it was a prototype unit, conceived and built on a short schedule, several design shortcomings were identified for this flight. One main design issue was that the power system was contained in a single unit, far from the camera. The imaging system has stringent power requirements to operate ideally, and the power subsystem did not meet those requirements. An imaging board with more power planes, better attention paid to power isolation, and all power regulation done on chip will provide cleaner images. These in turn will yield more accurate centroids, and more identifiable stars during daytime.
+DayStar's main goal at this point is to operate on another test flight within a year's time. As it was a prototype unit, conceived and built on a short schedule, several shortcomings were identified in the design and evidenced in the flight results. One issue was that the power system was contained in a single unit, far from the camera. The imaging system must be supplied stringent power requirements to operate ideally, and the power subsystem did not meet those requirements. An imaging board with more power planes and better isolation will provide cleaner images. These, in turn, will yield more accurate centroids, and more identifiable stars during daytime.
 
 Another design change would be to add active thermal regulation to key components, specifically the CMOS image sensor. In flight, the imaging system temperature stayed around 10 degrees Celsius, which is 50 degrees above the intended operating temperature. Dark currents and hot pixels increase with temperature, and active cooling down to the sensor's optimal temperature range will help provide cleaner images for analysis.
 
-Finally, the operation plan used for flight requires modifications. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. Ideally, the images would be exposed for the high gain settings. In daytime, exposures were such that the high gain images were fully saturated. Only for a few exposure times were stars identifiable using the low gain images. By adjusting exposure times to ensure that the high gain images are correctly exposed for, improved star identification and tracking performance is expected.
+Finally, the operation plan used for flight requires modifications. The imaging system has two gain settings: high and low. In night tests, the high gain settings were observed to be much cleaner than low, and stars were easier to identify from the background. Ideally, the images would be exposed for the high gain settings. In daytime, exposures were such that the high gain images were fully saturated. By adjusting exposure times to ensure that the high gain images are correctly exposed, improved star identification and tracking performance is expected.
 
-DayStar expects that with the design and operations changes implemented, future balloon flights will yield better performance in operation and star identification. Both the accuracy in tracking fields and the number of stars observed in daytime and nighttime conditions will go up, further validating DayStar's capability as a diurnal star tracker.
+The DayStar team predicts that by addressing the issues discussed, future balloon flights will yield better performance, further validating DayStar's capability as a diurnal star tracker, and will eventually render DayStar a viable option for balloon payloads requiring accurate daytime attitude knowledge.
 
 %-------------------------------------------------------------------------------------------------------
 \bibliographystyle{IEEEtran}
